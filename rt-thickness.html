@@ -4,133 +4,176 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RT On-Stream Thickness</title>
-  <link rel="stylesheet" href="style.css" />
+
   <style>
-  html {
-    height: 100%;
-    background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
-    background-attachment: fixed;
-  }
+    html {
+      height: 100%;
+      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
+      background-attachment: fixed;
+    }
 
-  body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: transparent;
-  }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  header {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px 0;
-    position: relative;
-    z-index: 2;
-  }
+    header {
+      padding: 18px 0 8px;
+    }
 
-  .logo {
-    height: 100px;
-    cursor: pointer;
-    display: block;
-  }
+    .logo {
+      height: 85px;
+      display: block;
+      margin: 0 auto;
+    }
 
-  main {
-    padding: 20px;
-    max-width: 600px;
-    width: 90%;
-    text-align: left;
-  }
+    main {
+      width: 100%;
+      max-width: 360px;   /* smaller, mobile-first */
+      padding: 14px;
+      text-align: center;
+    }
 
-  h2 {
-    color: #F8D87C;
-    text-align: center;
-  }
+    h2 {
+      color: #F8D87C;
+      margin-bottom: 10px;
+    }
 
-  p {
-    margin-bottom: 12px;
-    line-height: 1.6;
-  }
-</style>
+    p {
+      line-height: 1.55;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .field {
+      max-width: 300px;
+      margin: 0 auto 14px;
+      text-align: center;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 15px;
+      color: #F8D87C;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #b59b64;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 10px auto 0;
+      display: block;
+    }
+
+    #result {
+      max-width: 300px;
+      margin: 14px auto 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.25);
+      font-size: 16px;
+    }
+
+    .formula {
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .illustration {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .illustration img {
+      max-width: 220px;
+      opacity: 0.9;
+    }
+  </style>
 </head>
+
 <body>
 
-  <header>
-    <a href="index.html">
-      <img src="assets/logo.png" alt="Logo" class="logo" />
-    </a>
-  </header>
+<header>
+  <a href="index.html">
+    <img src="assets/logo.png" alt="Logo" class="logo">
+  </a>
+</header>
 
-  <main>
-    <h2>RT On-Stream Thickness</h2>
+<main>
 
-    <p>
-      Calculate the actual wall thickness based on radiographic measurements.
-      The calculation follows the standard geometric relation used for in-service RT.
-    </p>
+  <h2>RT On-Stream Thickness</h2>
 
-    <div style="margin: 14px 0;">
-      <label><strong>D1 – Effective pipe diameter (mm)</strong></label>
-      <input id="d1" type="number" step="any" placeholder="e.g. 168.3"
-        style="width:100%;padding:10px;border-radius:8px;border:none;">
-    </div>
+  <p>
+    Calculate the actual wall thickness based on radiographic measurements.
+    The calculation follows the standard geometric relation used for in-service RT.
+  </p>
 
-    <div style="margin: 14px 0;">
-      <label><strong>D2 – Measured diameter on film (mm)</strong></label>
-      <input id="d2" type="number" step="any" placeholder="e.g. 52.0"
-        style="width:100%;padding:10px;border-radius:8px;border:none;">
-    </div>
+  <div class="field">
+    <label>D1 – Effective pipe diameter (mm)</label>
+    <input id="D1" type="number" step="any" placeholder="e.g. 168.3">
+  </div>
 
-    <div style="margin: 14px 0;">
-      <label><strong>t2 – Measured thickness on film (mm)</strong></label>
-      <input id="t2" type="number" step="any" placeholder="e.g. 4.2"
-        style="width:100%;padding:10px;border-radius:8px;border:none;">
-    </div>
+  <div class="field">
+    <label>D2 – Measured diameter on film (mm)</label>
+    <input id="D2" type="number" step="any" placeholder="e.g. 175.0">
+  </div>
 
-    <button onclick="calculate()"
-      style="margin-top:10px;width:100%;padding:12px;border:none;border-radius:8px;
-             background:#b59b64;color:#000;font-weight:bold;font-size:16px;">
-      Calculate thickness
-    </button>
+  <div class="field">
+    <label>d2 – Measured thickness on film (mm)</label>
+    <input id="d2" type="number" step="any" placeholder="e.g. 4.2">
+  </div>
 
-    <div id="result"
-      style="margin-top:18px;padding:14px;border-radius:12px;
-             background:rgba(0,0,0,0.25);font-size:18px;">
-      Result: —
-    </div>
+  <button onclick="calculate()">Calculate thickness</button>
 
-    <p style="margin-top:12px;font-size:14px;opacity:0.85;">
-      Formula: <strong>t1 = (D1 / D2) × t2</strong>
-    </p>
+  <div id="result">Result: —</div>
 
-    <script>
-      function calculate() {
-        const d1 = parseFloat(document.getElementById('d1').value);
-        const d2 = parseFloat(document.getElementById('d2').value);
-        const t2 = parseFloat(document.getElementById('t2').value);
-        const out = document.getElementById('result');
+  <div class="formula">
+    Formula: <strong>d1 = (D1 / D2) × d2</strong>
+  </div>
 
-        if (!isNaN(d1) && !isNaN(d2) && !isNaN(t2) && d2 !== 0) {
-          const t1 = (d1 / d2) * t2;
-          out.textContent = 'Result: ' + t1.toFixed(2) + ' mm';
-        } else {
-          out.textContent = 'Result: invalid input';
-        }
-      }
-    </script>
-<div style="margin-top:5px; text-align:center;">
-  <img src="assets/d2.png"
-       alt="d2"
-       style="max-width:250px; opacity:0.9;">
-</div>
+  <div class="illustration">
+    <img src="assets/d2.png" alt="RT geometry illustration">
+  </div>
 
+</main>
 
-  </main>
+<script>
+  function calculate() {
+    const D1 = parseFloat(document.getElementById('D1').value);
+    const D2 = parseFloat(document.getElementById('D2').value);
+    const d2 = parseFloat(document.getElementById('d2').value);
+    const out = document.getElementById('result');
+
+    if (!isNaN(D1) && !isNaN(D2) && !isNaN(d2) && D2 !== 0) {
+      const d1 = (D1 / D2) * d2;
+      out.textContent = 'Result: ' + d1.toFixed(2) + ' mm';
+    } else {
+      out.textContent = 'Result: invalid input';
+    }
+  }
+</script>
 
 </body>
 </html>
