@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UT Materials & Temperature</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+    
+
+  html {
+    height: 100%;
+    background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
+    background-attachment: fixed;
+  }
+
+body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+    }
+
+    .logo {
+      height: 100px;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      text-align: left;
+    }
+
+    h2 {
+      color: #F8D87C;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+    </a>
+  </header>
+
+  
+<main>
+  <h2>UT – Materials & Temperature</h2>
+
+  <p>
+    Correct a measured ultrasonic thickness by applying a
+    <strong>material velocity factor</strong> and a
+    <strong>temperature correction factor</strong>.
+  </p>
+
+  <div class="card">
+    <label>Calibration temperature (°C)</label>
+    <input id="tcal" type="number" value="20">
+
+    <label>Measuring temperature (°C)</label>
+    <input id="temp" type="number">
+
+    <label>Measured material</label>
+    <select id="material">
+      <option value="5960">Steel (Carbon)</option><option value="5790">RVS 304</option><option value="5640">RVS 304L</option><option value="5770">RVS 316</option><option value="5660">RVS 316L</option><option value="6320">Aluminium</option><option value="4700">Copper</option><option value="5400">Monel 400</option><option value="1320">Lead</option><option value="2600">Silver</option><option value="5070">Titanium</option><option value="4210">Zinc</option><option value="5640">Nickel</option><option value="5000">Magnesium</option><option value="3260">Platinum</option>
+    </select>
+
+    <label>Measured thickness (mm)</label>
+    <input id="measured" type="number" step="any">
+
+    <button onclick="calculate()">Calculate</button>
+  </div>
+
+  <div class="card result">
+    <div><strong>True thickness:</strong> <span id="trueThickness">—</span> mm</div>
+    <div><strong>Total applied factor:</strong> <span id="factor">—</span></div>
+  </div>
+
+  <p class="formula">
+    Formula: <strong>t₁ = t₂ × (v<sub>material</sub> / v<sub>cal</sub>) × (K(T) / K(T<sub>cal</sub>))</strong>
+  </p>
+
+  <script>
+    const kTable = {"0": 1.0, "10": 0.996847, "20": 0.993694, "30": 0.990541, "40": 0.987388, "50": 0.984235, "60": 0.981082, "70": 0.977929, "80": 0.974776, "90": 0.971623, "100": 0.96847, "110": 0.965316, "120": 0.962163, "130": 0.95901, "140": 0.955857, "150": 0.952704, "160": 0.949551, "170": 0.946398, "180": 0.943245, "190": 0.940092, "200": 0.936939, "210": 0.933786, "220": 0.930633, "230": 0.92748, "240": 0.924327, "250": 0.921174, "260": 0.918021, "270": 0.914868, "280": 0.911715, "290": 0.908562, "300": 0.905409, "310": 0.902256, "320": 0.899103, "330": 0.89595, "340": 0.892797, "350": 0.889644, "360": 0.886491, "370": 0.883338, "380": 0.880185, "390": 0.877032, "400": 0.873879};
+    const vCal = 5960;
+
+    function getK(t) {
+      const temp = Math.min(400, Math.max(0, t));
+      const key = Math.round(temp / 10) * 10;
+      return kTable[key] || 1.0;
+    }
+
+    function calculate() {
+      const tcal = parseFloat(document.getElementById('tcal').value);
+      const temp = parseFloat(document.getElementById('temp').value);
+      const measured = parseFloat(document.getElementById('measured').value);
+      const vMat = parseFloat(document.getElementById('material').value);
+
+      if (isNaN(tcal) || isNaN(temp) || isNaN(measured)) return;
+
+      const factor = (vMat / vCal) * (getK(temp) / getK(tcal));
+      const trueThickness = measured * factor;
+
+      document.getElementById('trueThickness').textContent = trueThickness.toFixed(2);
+      document.getElementById('factor').textContent = factor.toFixed(3);
+    }
+  </script>
+
+  <style>
+    .card {
+      background: rgba(0,0,0,0.25);
+      padding: 16px;
+      border-radius: 14px;
+      margin: 16px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #F8D87C;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #b59b64;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e2c682;
+    }
+
+    .result div {
+      margin: 6px 0;
+      font-size: 18px;
+    }
+
+    .formula {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 10px;
+    }
+  </style>
+
+<div style="margin-top:5px; text-align:center;">
+  <img src="assets/ut.png"
+       alt="ut"
+       style="max-width:250px; opacity:0.9;">
+</div>
+
+</main>
+
+
+</body>
+</html>

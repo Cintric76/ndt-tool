@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RT On-Stream Check</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <style>
+    html {
+      height: 100%;
+      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
+      background-attachment: fixed;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      height: 100px;
+      cursor: pointer;
+      display: block;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      text-align: left;
+    }
+
+    h2 {
+      color: #F8D87C;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+  </style>
+
+</head>
+<body>
+
+  <header>
+    <a href="index.html">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+    </a>
+  </header>
+
+  <main>
+    <h2>RT On-Stream Check</h2>
+
+    <p>
+      Select <strong>source</strong>, then <strong>diameter</strong> and <strong>schedule</strong>.
+      The result is evaluated using the Excel threshold rules and the corresponding <strong>tangential path</strong> (L-value, mm).
+    </p>
+
+    <div style="margin: 12px 0 18px;">
+      <label for="sourceSelect" style="font-weight:bold;color:#F8D87C;">Source</label>
+      <select id="sourceSelect" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background: rgba(0,0,0,0.25);color:#fff;outline:none;">
+        <option value="se">Se-75</option>
+        <option value="ir">Ir-192</option>
+        <option value="co">Co-60</option>
+      </select>
+    </div>
+
+    <div style="margin: 12px 0 18px;">
+      <label for="diameterSelect" style="font-weight:bold;color:#F8D87C;">Diameter</label>
+      <select id="diameterSelect" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background: rgba(0,0,0,0.25);color:#fff;outline:none;"></select>
+    </div>
+
+    <div style="margin: 12px 0 18px;">
+      <label for="scheduleSelect" style="font-weight:bold;color:#F8D87C;">Schedule</label>
+      <select id="scheduleSelect" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background: rgba(0,0,0,0.25);color:#fff;outline:none;"></select>
+    </div>
+
+    <div id="resultCard" style="display:flex;gap:12px;align-items:center;margin-top:18px;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.18);">
+      <div id="statusDot" style="width:16px;height:16px;border-radius:999px;background:#999;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div id="statusTitle" style="font-size:18px;font-weight:700;">—</div>
+        <div id="lValue" style="opacity:0.95;">Tangential path (L): — mm</div>
+        <div id="details" style="opacity:0.85;font-size:14px;">—</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 18px;">
+      <div style="height:22px;border-radius:999px;background:linear-gradient(to right, #2ecc71, #f39c12, #e74c3c);"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;opacity:0.95;">
+        <span>Good</span><span>Bad</span>
+      </div>
+    </div>
+
+    <script>
+      // Full dataset loaded from Excel
+      const ROWS = [{"nb": 1.0, "od": 33.4, "sch": "40", "wt": 3.4, "l": 20.2}, {"nb": 1.0, "od": 33.4, "sch": "80", "wt": 4.5, "l": 22.8}, {"nb": 1.0, "od": 33.4, "sch": "160", "wt": 6.4, "l": 26.3}, {"nb": 1.0, "od": 33.4, "sch": "XXS", "wt": 9.1, "l": 29.7}, {"nb": 1.5, "od": 48.3, "sch": "40", "wt": 3.7, "l": 25.7}, {"nb": 1.5, "od": 48.3, "sch": "80", "wt": 5.1, "l": 29.7}, {"nb": 1.5, "od": 48.3, "sch": "160", "wt": 7.1, "l": 34.2}, {"nb": 1.5, "od": 48.3, "sch": "XXS", "wt": 10.2, "l": 39.4}, {"nb": 2.0, "od": 60.3, "sch": "40", "wt": 3.9, "l": 29.7}, {"nb": 2.0, "od": 60.3, "sch": "80", "wt": 5.5, "l": 34.7}, {"nb": 2.0, "od": 60.3, "sch": "160", "wt": 8.7, "l": 42.5}, {"nb": 2.0, "od": 60.3, "sch": "XXS", "wt": 11.1, "l": 46.7}, {"nb": 3.0, "od": 88.9, "sch": "40", "wt": 5.5, "l": 42.8}, {"nb": 3.0, "od": 88.9, "sch": "80", "wt": 7.6, "l": 49.7}, {"nb": 3.0, "od": 88.9, "sch": "160", "wt": 11.1, "l": 58.8}, {"nb": 3.0, "od": 88.9, "sch": "XXS", "wt": 15.2, "l": 66.9}, {"nb": 4.0, "od": 114.3, "sch": "40", "wt": 6.0, "l": 51.0}, {"nb": 4.0, "od": 114.3, "sch": "80", "wt": 8.6, "l": 60.3}, {"nb": 4.0, "od": 114.3, "sch": "120", "wt": 11.1, "l": 67.7}, {"nb": 4.0, "od": 114.3, "sch": "160", "wt": 13.5, "l": 73.8}, {"nb": 4.0, "od": 114.3, "sch": "XXS", "wt": 17.1, "l": 81.5}, {"nb": 5.0, "od": 141.3, "sch": "40", "wt": 6.6, "l": 59.6}, {"nb": 5.0, "od": 141.3, "sch": "80", "wt": 9.5, "l": 70.8}, {"nb": 5.0, "od": 141.3, "sch": "160", "wt": 15.9, "l": 89.3}, {"nb": 5.0, "od": 141.3, "sch": "XXS", "wt": 19.0, "l": 96.4}, {"nb": 6.0, "od": 168.3, "sch": "40", "wt": 7.1, "l": 67.7}, {"nb": 6.0, "od": 168.3, "sch": "80", "wt": 11.0, "l": 83.2}, {"nb": 6.0, "od": 168.3, "sch": "120", "wt": 14.3, "l": 93.9}, {"nb": 6.0, "od": 168.3, "sch": "160", "wt": 18.3, "l": 104.8}, {"nb": 6.0, "od": 168.3, "sch": "XXS", "wt": 21.9, "l": 113.2}, {"nb": 8.0, "od": 219.1, "sch": "40", "wt": 8.2, "l": 83.2}, {"nb": 8.0, "od": 219.1, "sch": "80", "wt": 12.7, "l": 102.5}, {"nb": 8.0, "od": 219.1, "sch": "120", "wt": 18.3, "l": 121.2}, {"nb": 8.0, "od": 219.1, "sch": "XXS", "wt": 22.6, "l": 133.3}, {"nb": 8.0, "od": 219.1, "sch": "160", "wt": 23.0, "l": 134.3}, {"nb": 10.0, "od": 273.0, "sch": "40", "wt": 9.3, "l": 99.0}, {"nb": 10.0, "od": 273.0, "sch": "80", "wt": 15.1, "l": 124.8}, {"nb": 10.0, "od": 273.0, "sch": "120", "wt": 21.4, "l": 146.8}, {"nb": 10.0, "od": 273.0, "sch": "XXS", "wt": 25.4, "l": 158.6}, {"nb": 10.0, "od": 273.0, "sch": "160", "wt": 28.6, "l": 167.2}, {"nb": 12.0, "od": 323.8, "sch": "40", "wt": 10.3, "l": 113.6}, {"nb": 12.0, "od": 323.8, "sch": "80", "wt": 17.5, "l": 146.4}, {"nb": 12.0, "od": 323.8, "sch": "120", "wt": 25.4, "l": 174.1}, {"nb": 12.0, "od": 323.8, "sch": "XXS", "wt": 25.4, "l": 174.1}, {"nb": 12.0, "od": 323.8, "sch": "160", "wt": 33.3, "l": 196.7}];
+
+      // Excel threshold rules
+      function evaluate(sourceKey, L) {
+        if (sourceKey === 'se') {
+          if (L < 45) return { key: 'OK', title: 'Possible', color: '#2ecc71' };
+          if (L <= 55) return { key: 'LIMIT', title: 'Limited Success', color: '#f39c12' };
+          return { key: 'X', title: 'Not Possible', color: '#e74c3c' };
+        }
+
+        if (sourceKey === 'ir') {
+          if (L < 65) return { key: 'OK', title: 'Possible', color: '#2ecc71' };
+          if (L <= 85) return { key: 'LIMIT', title: 'Limited Success', color: '#f39c12' };
+          return { key: 'X', title: 'Not Possible', color: '#e74c3c' };
+        }
+
+        if (sourceKey === 'co') {
+          if (L < 50) return { key: 'X', title: 'Not Possible', color: '#e74c3c' };
+          if (L <= 100) return { key: 'OK', title: 'Possible', color: '#2ecc71' };
+          if (L <= 150) return { key: 'LIMIT', title: 'Limited Success', color: '#f39c12' };
+          return { key: 'X', title: 'Not Possible', color: '#e74c3c' };
+        }
+
+        return { key: '-', title: '-', color: '#999' };
+      }
+
+      const sourceSelect = document.getElementById('sourceSelect');
+      const diameterSelect = document.getElementById('diameterSelect');
+      const scheduleSelect = document.getElementById('scheduleSelect');
+
+      const statusDot = document.getElementById('statusDot');
+      const statusTitle = document.getElementById('statusTitle');
+      const lValue = document.getElementById('lValue');
+      const details = document.getElementById('details');
+
+      function diameterKey(r) {
+        // Key by NPS + OD to be robust (even if OD duplicates ever exist)
+        return `${r.nb}|${r.od}`;
+      }
+
+      function formatDiameterLabel(r) {
+        // Show NPS and OD like: 2" - 60.3 mm
+        const nps = Number.isInteger(r.nb) ? r.nb.toString() : r.nb.toString();
+        return `${nps}\" - ${r.od} mm`;
+      }
+
+      function populateDiameters() {
+        const seen = new Map();
+        ROWS.forEach(r => {
+          const k = diameterKey(r);
+          if (!seen.has(k)) seen.set(k, r);
+        });
+
+        diameterSelect.innerHTML = '';
+        Array.from(seen.values())
+          .sort((a,b) => (a.nb - b.nb) || (a.od - b.od))
+          .forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = diameterKey(r);
+            opt.textContent = formatDiameterLabel(r);
+            diameterSelect.appendChild(opt);
+          });
+      }
+
+      function schedulesForSelectedDiameter() {
+        const key = diameterSelect.value;
+        return ROWS.filter(r => diameterKey(r) === key)
+                   .sort((a,b) => (a.wt - b.wt));
+      }
+
+      function populateSchedules() {
+        const list = schedulesForSelectedDiameter();
+        scheduleSelect.innerHTML = '';
+        list.forEach(r => {
+          const opt = document.createElement('option');
+          // stable identity via full row values
+          opt.value = JSON.stringify({ nb:r.nb, od:r.od, sch:r.sch, wt:r.wt, l:r.l });
+          opt.textContent = `Sch${r.sch} - ${r.wt} mm`;
+          scheduleSelect.appendChild(opt);
+        });
+      }
+
+      function findSelectedRow() {
+        try {
+          const v = JSON.parse(scheduleSelect.value);
+          return ROWS.find(r => r.nb===v.nb && r.od===v.od && r.sch===v.sch && r.wt===v.wt && r.l===v.l) || null;
+        } catch(e) {
+          return null;
+        }
+      }
+
+      function render() {
+        const sourceKey = sourceSelect.value; // se/ir/co
+        const row = findSelectedRow();
+        if (!row) {
+          statusDot.style.background = '#999';
+          statusTitle.textContent = '—';
+          lValue.textContent = 'Tangential path (L): — mm';
+          details.textContent = '—';
+          return;
+        }
+
+        const meta = evaluate(sourceKey, row.l);
+
+        statusDot.style.background = meta.color;
+        statusTitle.textContent = meta.title;
+        lValue.textContent = `Tangential path (L): ${row.l.toFixed(1)} mm`;
+        details.textContent = `Schedule: ${row.sch}  |  WT: ${row.wt.toFixed(1)} mm  |  OD: ${row.od} mm  |  NPS: ${row.nb}\"`;
+      }
+
+      // Init
+      populateDiameters();
+      if (diameterSelect.options.length) {
+        diameterSelect.value = diameterSelect.options[0].value;
+      }
+      populateSchedules();
+      if (scheduleSelect.options.length) {
+        scheduleSelect.value = scheduleSelect.options[0].value;
+      }
+      render();
+
+      // Events
+      sourceSelect.addEventListener('change', render);
+      diameterSelect.addEventListener('change', () => {
+        populateSchedules();
+        if (scheduleSelect.options.length) {
+          scheduleSelect.value = scheduleSelect.options[0].value;
+        }
+        render();
+      });
+      scheduleSelect.addEventListener('change', render);
+    </script>
+
+<div style="margin-top:5px; text-align:center;">
+  <img src="assets/lwaarde.png"
+       alt="lwaarde"
+       style="max-width:250px; opacity:0.9;">
+</div>
+
+  </main>
+
+</body>
+</html>

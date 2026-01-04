@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RT Exposure Calculator</title>
+  
+  <style>
+    html {
+      height: 100%;
+      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
+      background-attachment: fixed;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      height: 100px;
+      cursor: pointer;
+      display: block;
+    }
+
+    main {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      text-align: left;
+      font-weight: bold;
+      color: #F8D87C;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #b59b64;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #e2c682;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 15px;
+      }
+
+      label, select, input, button {
+        font-size: 15px;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <header>
+    <a href="index.html">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+    </a>
+  </header>
+
+  <main>
+    <label for="source">Source</label>
+    <select id="source">
+      <option value="Ir-192">Ir-192</option>
+      <option value="Se-75">Se-75</option>
+      <option value="Co-60">Co-60</option>
+    </select>
+
+    <label for="filmType">Film Type</label>
+    <select id="filmType">
+      <option value="D4">D4</option>
+      <option value="D5">D5</option>
+      <option value="D7" selected>D7</option>
+    </select>
+
+    <label for="activity">Activity (Ci)</label>
+    <input type="number" id="activity" step="any" />
+
+    <label for="thickness">Steel Thickness (mm)</label>
+    <input type="number" id="thickness" step="any" />
+
+    <label for="distance">FFD Distance (cm)</label>
+    <input type="number" id="distance" step="any" />
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="result"></div>
+
+<div style="margin-top:5px; text-align:center;">
+  <img src="assets/rx.png"
+       alt="rx"
+       style="max-width:250px; opacity:0.9;">
+</div>
+
+
+  </main>
+
+  <script>
+    const filmFactors = {
+      "Ir-192": { D4: 3.0, D5: 1.5, D7: 1.0 },
+      "Se-75": { D4: 2.4, D5: 1.4, D7: 1.0 },
+      "Co-60": { D4: 3.0, D5: 1.5, D7: 1.0 }
+    };
+
+    const muBySource = {
+      "Ir-192": 0.047529066436122015,
+      "Se-75": 0.06672950045788328,
+      "Co-60": 0.03195864092343074
+    };
+
+    const kBySource = {
+      "Ir-192": 0.71070778151011,
+      "Se-75": 1.5335704855042178,
+      "Co-60": 0.5489183450213326
+    };
+
+    function calculate() {
+      const source = document.getElementById("source").value;
+      const filmType = document.getElementById("filmType").value;
+      const activity = parseFloat(document.getElementById("activity").value);
+      const thickness = parseFloat(document.getElementById("thickness").value);
+      const distance = parseFloat(document.getElementById("distance").value);
+
+      if (isNaN(activity) || isNaN(thickness) || isNaN(distance)) {
+        document.getElementById("result").textContent = "Please fill in all values.";
+        return;
+      }
+
+      const mu = muBySource[source];
+      const k = kBySource[source];
+      const filmFactor = filmFactors[source][filmType];
+
+      const seconds = k * filmFactor * (Math.pow(distance, 2) / activity) * Math.exp(mu * thickness);
+
+      const min = Math.floor(seconds / 60);
+      const sec = Math.round(seconds % 60);
+      const timeStr = `${min} min ${sec} sec`;
+
+      document.getElementById("result").textContent = `Estimated exposure time: ${timeStr}`;
+    }
+  </script>
+</body>
+</html>

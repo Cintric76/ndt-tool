@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NDT Techniques Explained</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <style>
+    html {
+      height: 100%;
+      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
+      background-attachment: fixed;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      height: 100px;
+      cursor: pointer;
+      display: block;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 800px;
+      width: 90%;
+      text-align: left;
+    }
+
+    h2 {
+      color: #F8D87C;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+  </style>
+
+</head>
+<body>
+
+  <header>
+    <a href="index.html">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
+    </a>
+  </header>
+
+    <main>
+    <h2>NDT Techniques (Overview)</h2>
+
+    <p>
+      Select a technique from the list below to view its description, advantages, limitations, and practical constraints.
+    </p>
+
+    <div class="tech-picker">
+      <label for="techSelect"><strong>Technique</strong></label>
+      <select id="techSelect" name="techSelect">
+      <optgroup label="🟢 Standard">
+        <option value="Visual Testing (VT)">Visual Testing (VT)</option>
+        <option value="Liquid Penetrant (PT)">Liquid Penetrant (PT)</option>
+        <option value="Magnetic Particle (MT)">Magnetic Particle (MT)</option>
+        <option value="Ultrasonic Testing (UT)">Ultrasonic Testing (UT)</option>
+        <option value="Radiography (RT – Film)">Radiography (RT – Film)</option>
+        <option value="Radiography (RT – Digital)">Radiography (RT – Digital)</option>
+        <option value="Eddy Current (ET)">Eddy Current (ET)</option>
+      </optgroup>
+      <optgroup label="🔵 Advanced">
+        <option value="Phased Array UT (PAUT)">Phased Array UT (PAUT)</option>
+        <option value="TOFD">TOFD</option>
+        <option value="Guided Wave UT (GWUT)">Guided Wave UT (GWUT)</option>
+        <option value="Full Matrix Capture (FMC)">Full Matrix Capture (FMC)</option>
+        <option value="Total Focusing Method (TFM)">Total Focusing Method (TFM)</option>
+        <option value="Creeping Wave UT">Creeping Wave UT</option>
+        <option value="High-Temp UT (HT-UT)">High-Temp UT (HT-UT)</option>
+        <option value="EMAT">EMAT</option>
+        <option value="Computed Radiography (CR)">Computed Radiography (CR)</option>
+        <option value="Digital Radiography (DR)">Digital Radiography (DR)</option>
+        <option value="Computed Tomography (CT)">Computed Tomography (CT)</option>
+        <option value="Pulsed Eddy Current (PEC)">Pulsed Eddy Current (PEC)</option>
+        <option value="Remote Field Testing (RFT)">Remote Field Testing (RFT)</option>
+        <option value="ACFM">ACFM</option>
+        <option value="Magnetic Flux Leakage (MFL)">Magnetic Flux Leakage (MFL)</option>
+        <option value="SLOFEC">SLOFEC</option>
+        <option value="Thermography (IRT)">Thermography (IRT)</option>
+        <option value="Laser Shearography">Laser Shearography</option>
+        <option value="Laser Ultrasonics (LU)">Laser Ultrasonics (LU)</option>
+        <option value="Acoustic Emission (AE)">Acoustic Emission (AE)</option>
+      </optgroup>
+      <optgroup label="🟣 Extra">
+        <option value="Digital Image Correlation (DIC)">Digital Image Correlation (DIC)</option>
+        <option value="3D Optical Scanning">3D Optical Scanning</option>
+        <option value="AI-assisted VT">AI-assisted VT</option>
+        <option value="Microwave NDT">Microwave NDT</option>
+        <option value="Ground Penetrating Radar (GPR)">Ground Penetrating Radar (GPR)</option>
+        <option value="Structural Health Monitoring (SHM)">Structural Health Monitoring (SHM)</option>
+        <option value="UT Corrosion Mapping">UT Corrosion Mapping</option>
+        <option value="Online UT Monitoring">Online UT Monitoring</option>
+        <option value="Electrochemical Probes">Electrochemical Probes</option>
+        <option value="Neutron Radiography">Neutron Radiography</option>
+        <option value="X-ray Backscatter">X-ray Backscatter</option>
+        <option value="Terahertz (THz)">Terahertz (THz)</option>
+        <option value="Resonance Testing">Resonance Testing</option>
+        <option value="Vibration Analysis">Vibration Analysis</option>
+      </optgroup>
+      </select>
+    </div>
+
+    <div id="techContent" class="tech-content" aria-live="polite">
+    <section class="technique" data-tech="Visual Testing (VT)" hidden>
+      <h3>Visual Testing (VT)</h3>
+      <p class="tech-desc">Direct or remote visual examination of surfaces.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Lowest cost</li>
+          <li>Fast coverage</li>
+          <li>In-service capable</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Surface-visible only</li>
+          <li>Access/lighting dependent</li>
+          <li>Subjective</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +50 °C (stand-off optics up to ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>All materials; needs line-of-sight and clean surface</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Liquid Penetrant (PT)" hidden>
+      <h3>Liquid Penetrant (PT)</h3>
+      <p class="tech-desc">Dye penetrant reveals surface-breaking discontinuities.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Very sensitive to tight cracks</li>
+          <li>Low cost</li>
+          <li>Works on non-magnetic materials</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Surface-breaking only</li>
+          <li>Needs thorough cleaning</li>
+          <li>Not for porous materials</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Standard: +5 to +50 °C (high-temp systems up to ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Non-porous surfaces; metals and some non-metals</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Magnetic Particle (MT)" hidden>
+      <h3>Magnetic Particle (MT)</h3>
+      <p class="tech-desc">Magnetization + particles indicate surface/near-surface defects.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Excellent for cracking</li>
+          <li>Fast results</li>
+          <li>Relatively low cost</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Ferromagnetic only</li>
+          <li>Limited depth (few mm)</li>
+          <li>May require demagnetization</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Wet method: -10 to +50 °C (dry powder up to ~300 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Ferromagnetic steels only (not Al/Cu/austenitic SS)</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Ultrasonic Testing (UT)" hidden>
+      <h3>Ultrasonic Testing (UT)</h3>
+      <p class="tech-desc">Pulse-echo ultrasound for flaws and thickness measurement.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Internal defects + thickness</li>
+          <li>One-side access possible</li>
+          <li>No radiation</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs coupling/surface condition</li>
+          <li>Orientation sensitive</li>
+          <li>Operator dependent</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Standard: -10 to +50 °C (high-temp probes/couplants ~250–300 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best on homogeneous metals; limited on coarse-grain/cast/austenitic welds</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Radiography (RT – Film)" hidden>
+      <h3>Radiography (RT – Film)</h3>
+      <p class="tech-desc">X-ray/gamma transmission recorded on film.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Permanent record</li>
+          <li>Good for volumetric flaws</li>
+          <li>Strong weld imaging (porosity/slag)</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Radiation controls</li>
+          <li>Cracks weak unless oriented</li>
+          <li>Often needs access both sides</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Film handling typically &lt;~50 °C (part temp usually not limiting)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Most materials; limited by thickness/density and access</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Radiography (RT – Digital)" hidden>
+      <h3>Radiography (RT – Digital)</h3>
+      <p class="tech-desc">Transmission radiography using CR plates or DR detectors.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Faster than film</li>
+          <li>Digital storage/enhancement</li>
+          <li>Dose optimization possible</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>High CAPEX</li>
+          <li>Detector fragility</li>
+          <li>Cracks still challenging</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Detectors/plates typically 0 to +40 °C (OEM dependent)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Same as film RT; thickness/density constraints apply</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Eddy Current (ET)" hidden>
+      <h3>Eddy Current (ET)</h3>
+      <p class="tech-desc">Induced currents in conductive materials detect surface flaws.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>No couplant</li>
+          <li>Fast</li>
+          <li>Can work through thin coatings</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Conductive only</li>
+          <li>Limited depth</li>
+          <li>Lift-off/geometry sensitive</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +60 °C (high-temp probes ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Electrically conductive materials only</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Phased Array UT (PAUT)" hidden>
+      <h3>Phased Array UT (PAUT)</h3>
+      <p class="tech-desc">Multi-element UT with electronic beam steering and focusing.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>High POD</li>
+          <li>Multi-angle coverage</li>
+          <li>Digital imaging and reporting</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Complex setup</li>
+          <li>Higher cost</li>
+          <li>Advanced training required</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +50 °C (high-temp setups ~250–300 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Metals with acceptable attenuation; challenges in coarse-grain/austenitic welds</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="TOFD" hidden>
+      <h3>TOFD</h3>
+      <p class="tech-desc">Uses diffracted waves from crack tips for accurate sizing.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Excellent height sizing</li>
+          <li>Good for planar flaws</li>
+          <li>Fast encoded weld scanning</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Near-surface dead zones</li>
+          <li>Needs good coupling/access</li>
+          <li>Often paired with PAUT</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +50 °C (high-temp ~250 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best on welds/plate/pipe metals; poor on highly scattering materials</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Guided Wave UT (GWUT)" hidden>
+      <h3>Guided Wave UT (GWUT)</h3>
+      <p class="tech-desc">Long-range ultrasonic screening along pipes/tubes.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Screens long lengths</li>
+          <li>CUI screening</li>
+          <li>Minimal insulation removal</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Screening only</li>
+          <li>Reflections from supports</li>
+          <li>Follow-up local NDT required</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -20 to +80 °C (high-temp collars up to ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Primarily metallic pipes/tubes with relatively uniform cross-section</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Full Matrix Capture (FMC)" hidden>
+      <h3>Full Matrix Capture (FMC)</h3>
+      <p class="tech-desc">Records all TX/RX element combinations for advanced imaging.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Data rich</li>
+          <li>Enables TFM</li>
+          <li>Improved characterization in difficult cases</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Slower acquisition</li>
+          <li>More processing</li>
+          <li>Higher cost/complexity</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Similar to PAUT hardware: -10 to +50 °C (high-temp with special probes)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Metals; challenged by high attenuation/scatter</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Total Focusing Method (TFM)" hidden>
+      <h3>Total Focusing Method (TFM)</h3>
+      <p class="tech-desc">Post-processing of FMC data for high-resolution focused images.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Excellent resolution</li>
+          <li>Strong characterization</li>
+          <li>Good for complex welds</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Computational load</li>
+          <li>Needs good data quality</li>
+          <li>Skill intensive</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>As FMC/PAUT: typical -10 to +50 °C (high-temp setups available)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>As FMC; best on metals with manageable attenuation</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Creeping Wave UT" hidden>
+      <h3>Creeping Wave UT</h3>
+      <p class="tech-desc">Near-surface UT mode for defects near weld cap/root/HAZ.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Improves near-surface detection</li>
+          <li>Useful on certain weld geometries</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Setup sensitive</li>
+          <li>Interpretation complex</li>
+          <li>Limited application envelope</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>As UT: typical -10 to +50 °C (high-temp possible with special gear)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best on steel welds; surface condition influences performance</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="High-Temp UT (HT-UT)" hidden>
+      <h3>High-Temp UT (HT-UT)</h3>
+      <p class="tech-desc">Ultrasonic inspection performed on hot components.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Avoids shutdown</li>
+          <li>In-service thickness monitoring</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Couplant/probe wear</li>
+          <li>Safety/access challenges</li>
+          <li>Lower stability</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Commonly ~150–300 °C (special systems higher, application-specific)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Metallic components; heavy scale/oxidation reduces coupling</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="EMAT" hidden>
+      <h3>EMAT</h3>
+      <p class="tech-desc">Couplant-free ultrasound using electromagnetic generation.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>No couplant</li>
+          <li>Works on hot/rough surfaces</li>
+          <li>Repeatable scanning</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Lower signal amplitude</li>
+          <li>Lift-off sensitive</li>
+          <li>More specialized</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Often up to ~500 °C (system dependent)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Electrically conductive materials; performance varies with magnetic properties</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Computed Radiography (CR)" hidden>
+      <h3>Computed Radiography (CR)</h3>
+      <p class="tech-desc">Radiography using imaging plates scanned into digital images.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Reusable plates</li>
+          <li>Digital workflow</li>
+          <li>More flexible than DR</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Plate handling/scan time</li>
+          <li>Plate wear</li>
+          <li>Still radiation-controlled</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Plates/scanners typically 0 to +40 °C</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Same as RT; thickness/density constraints</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Digital Radiography (DR)" hidden>
+      <h3>Digital Radiography (DR)</h3>
+      <p class="tech-desc">Radiography using flat panel detectors (near real-time imaging).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Very fast results</li>
+          <li>Immediate feedback</li>
+          <li>Digital dose optimization</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Expensive</li>
+          <li>Detector damage risk</li>
+          <li>Still limited for planar cracks</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Detectors typically 0 to +40 °C (OEM dependent)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Same as RT; thickness/density constraints</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Computed Tomography (CT)" hidden>
+      <h3>Computed Tomography (CT)</h3>
+      <p class="tech-desc">3D radiographic reconstruction for internal geometry/defects.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>True 3D imaging</li>
+          <li>Excellent characterization</li>
+          <li>Accurate sizing (within limits)</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Very expensive</li>
+          <li>Slow</li>
+          <li>Part size/thickness limits</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically lab/room-temperature process (system dependent)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for small/medium parts; dense/thick metals are challenging</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Pulsed Eddy Current (PEC)" hidden>
+      <h3>Pulsed Eddy Current (PEC)</h3>
+      <p class="tech-desc">Low-frequency pulsed EM for corrosion/thickness through insulation.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>CUI screening</li>
+          <li>Minimal surface prep</li>
+          <li>Good area coverage</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Low spatial resolution</li>
+          <li>Limited sizing</li>
+          <li>Geometry/support effects</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Commonly up to ~200 °C (some systems up to ~500 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Conductive materials (often carbon steel); insulation type/thickness affects results</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Remote Field Testing (RFT)" hidden>
+      <h3>Remote Field Testing (RFT)</h3>
+      <p class="tech-desc">EM tube inspection method mainly for ferromagnetic tubing.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Good for tube wall loss</li>
+          <li>Less sensitive to deposits</li>
+          <li>Used in heat exchangers</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Slow</li>
+          <li>Limited crack detection</li>
+          <li>Tube-focused method</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +60 °C (probe electronics)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for ferromagnetic (carbon steel) tubes</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="ACFM" hidden>
+      <h3>ACFM</h3>
+      <p class="tech-desc">EM method for surface-breaking cracks (often through coatings).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Works through coatings</li>
+          <li>Good crack length sizing</li>
+          <li>Less prep than PT/MT</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Surface-breaking only</li>
+          <li>Geometry effects</li>
+          <li>Skilled use required</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +60 °C (high-temp probes exist)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Conductive materials; widely used on steel structures (coated/uncoated)</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Magnetic Flux Leakage (MFL)" hidden>
+      <h3>Magnetic Flux Leakage (MFL)</h3>
+      <p class="tech-desc">Magnetization + sensors detect metal loss (tanks/pipes).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Fast scanning</li>
+          <li>Good for corrosion/metal loss</li>
+          <li>Mature method</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Weak for tight cracks</li>
+          <li>Calibration needed for sizing</li>
+          <li>Ferromagnetic only</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typical: -10 to +60 °C (special systems up to ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Ferromagnetic materials only (carbon steel tanks/pipes)</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="SLOFEC" hidden>
+      <h3>SLOFEC</h3>
+      <p class="tech-desc">Saturation + low-frequency eddy currents for corrosion under coatings/scale.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Better penetration than standard ET</li>
+          <li>Optimized for ferromagnetic steel</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Complex</li>
+          <li>Geometry sensitive</li>
+          <li>Less common availability</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +60 °C (variants may allow higher)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Conductive; often optimized for ferromagnetic steels</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Thermography (IRT)" hidden>
+      <h3>Thermography (IRT)</h3>
+      <p class="tech-desc">IR imaging to detect thermal anomalies (passive/active).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Non-contact</li>
+          <li>Fast area coverage</li>
+          <li>In-service capable</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs thermal contrast</li>
+          <li>Limited depth</li>
+          <li>Emissivity/reflections affect results</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Camera dependent: commonly -20 to +350 °C (higher with specialty)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>All materials; surface emissivity management needed</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Laser Shearography" hidden>
+      <h3>Laser Shearography</h3>
+      <p class="tech-desc">Laser interferometry maps strain under load to reveal subsurface flaws.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Full-field</li>
+          <li>Excellent for composites/bonds</li>
+          <li>Non-contact</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Vibration sensitive</li>
+          <li>Controlled loading needed</li>
+          <li>Less for thick metals</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +40 °C (system/environment constraints)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for composites/honeycomb/bonds; requires optical access</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Laser Ultrasonics (LU)" hidden>
+      <h3>Laser Ultrasonics (LU)</h3>
+      <p class="tech-desc">Laser-generated ultrasound with optical detection (non-contact UT).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>No couplant</li>
+          <li>Works on hot/moving parts</li>
+          <li>Automation friendly</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Expensive</li>
+          <li>Alignment/surface reflectivity sensitive</li>
+          <li>Laser safety controls</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Stand-off possible on hot parts (hundreds °C), system dependent</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Many solids with optical access; surface condition affects performance</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Acoustic Emission (AE)" hidden>
+      <h3>Acoustic Emission (AE)</h3>
+      <p class="tech-desc">Sensors detect transient waves from active damage during loading.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Global monitoring</li>
+          <li>In-service possible</li>
+          <li>Good for proof/pressure tests</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Does not size defects directly</li>
+          <li>Noise discrimination needed</li>
+          <li>Needs loading</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Sensors typically -20 to +80 °C (high-temp up to ~500 °C, waveguides possible)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Many materials; coupling/attenuation and sensor mounting quality matter</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Digital Image Correlation (DIC)" hidden>
+      <h3>Digital Image Correlation (DIC)</h3>
+      <p class="tech-desc">Optical full-field strain/displacement from speckle tracking.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Full-field strain</li>
+          <li>Non-contact</li>
+          <li>Great for validation and crack opening studies</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs line-of-sight</li>
+          <li>Lighting sensitive</li>
+          <li>Not an internal defect method</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +40 °C (high-temp variants exist)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Any visible surface with speckle/texture</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="3D Optical Scanning" hidden>
+      <h3>3D Optical Scanning</h3>
+      <p class="tech-desc">Structured light scanning for 3D geometry and profiling.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Fast geometry capture</li>
+          <li>Great for deformation/corrosion profiling</li>
+          <li>Digital records</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Line-of-sight only</li>
+          <li>Shiny surfaces can be difficult</li>
+          <li>No internal defects</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +40 °C (optics constraints)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Any surface; shiny/transparent may need matting</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="AI-assisted VT" hidden>
+      <h3>AI-assisted VT</h3>
+      <p class="tech-desc">Machine vision for surface detection, grading, and trending.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Repeatable screening</li>
+          <li>Fast</li>
+          <li>Scales well</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs training data</li>
+          <li>False calls possible</li>
+          <li>Still needs human validation</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +50 °C (stand-off possible for hotter items)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Any visible surface; consistent imaging conditions required</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Microwave NDT" hidden>
+      <h3>Microwave NDT</h3>
+      <p class="tech-desc">Microwave interaction for moisture/dielectric changes and anomalies.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Good for moisture/voids in dielectrics</li>
+          <li>Non-ionizing</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Limited in conductive materials</li>
+          <li>Application-specific calibration</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +50 °C (electronics)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for non-conductive materials (composites, plastics, insulation)</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Ground Penetrating Radar (GPR)" hidden>
+      <h3>Ground Penetrating Radar (GPR)</h3>
+      <p class="tech-desc">EM pulses locate interfaces/objects in concrete/soil/asphalt.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Fast scanning</li>
+          <li>Rebar/duct/void detection</li>
+          <li>Non-ionizing</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Poor in wet/conductive media</li>
+          <li>Interpretation intensive</li>
+          <li>Depth-resolution tradeoff</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically -10 to +50 °C (field electronics)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for concrete/asphalt/soil; limited in salty/wet conductive conditions</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Structural Health Monitoring (SHM)" hidden>
+      <h3>Structural Health Monitoring (SHM)</h3>
+      <p class="tech-desc">Permanent sensors for condition trending (strain/vibration/AE/UT).</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Continuous monitoring</li>
+          <li>Detects change over time</li>
+          <li>Reduces manual inspections</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs baseline + data management</li>
+          <li>Sensor durability issues</li>
+          <li>Thresholds can be tricky</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Sensor dependent (often -40 to +85 °C; higher with special sensors)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Depends on sensor type and mounting; broad applicability</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="UT Corrosion Mapping" hidden>
+      <h3>UT Corrosion Mapping</h3>
+      <p class="tech-desc">Encoded or grid UT thickness mapping for wall loss distribution.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Quantitative thickness map</li>
+          <li>Good for remaining life inputs</li>
+          <li>Automatable</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Needs surface access/prep</li>
+          <li>Slow without automation</li>
+          <li>Coupling affected by coatings/roughness</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>As UT: typical -10 to +50 °C (high-temp options exist)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Metals; limited on attenuative castings/composites</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Online UT Monitoring" hidden>
+      <h3>Online UT Monitoring</h3>
+      <p class="tech-desc">Permanently mounted UT sensors for corrosion/erosion trending.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Trending at key points</li>
+          <li>Fewer shutdowns</li>
+          <li>Good for high-risk circuits</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Point measurement only</li>
+          <li>Installation quality critical</li>
+          <li>Long-term coupling challenges</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>System dependent (often up to ~150–250 °C; higher with waveguides)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Metals; requires reliable permanent mounting surface</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Electrochemical Probes" hidden>
+      <h3>Electrochemical Probes</h3>
+      <p class="tech-desc">Indirect corrosion monitoring (LPR/ER) for corrosion rate.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Real-time corrosion rate</li>
+          <li>Useful for process control</li>
+          <li>Complements thickness data</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Indirect (not defect detection)</li>
+          <li>Chemistry dependent</li>
+          <li>Probe maintenance required</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Probe dependent (often ambient to ~200 °C)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Requires installable probe locations in representative process environments</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Neutron Radiography" hidden>
+      <h3>Neutron Radiography</h3>
+      <p class="tech-desc">Neutron imaging with unique contrast for light elements inside metal.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Excellent for water/hydrogen in metal</li>
+          <li>Unique contrast vs X-ray</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Specialized facilities</li>
+          <li>High cost</li>
+          <li>Limited availability</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically facility/lab constraints</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Use-case driven (hydrogen/water content); facility constraints dominate</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="X-ray Backscatter" hidden>
+      <h3>X-ray Backscatter</h3>
+      <p class="tech-desc">Single-side radiographic imaging using scattered X-rays.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>One-side access</li>
+          <li>Useful in some field constraints</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Lower penetration/resolution vs transmission RT</li>
+          <li>Still radiation</li>
+          <li>Application-specific</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Detector/electronics typically 0 to +40 °C</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Thickness/density limited; not ideal for very thick steel</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Terahertz (THz)" hidden>
+      <h3>Terahertz (THz)</h3>
+      <p class="tech-desc">THz waves for coatings, composites, moisture and layer defects.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Non-ionizing</li>
+          <li>Good for coatings/layers</li>
+          <li>Can detect delamination/moisture</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Poor in metals</li>
+          <li>Water absorption effects</li>
+          <li>Specialized/expensive</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +40 °C (instrument)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Best for dielectrics (polymers/composites/coatings); not for bulk metals</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Resonance Testing" hidden>
+      <h3>Resonance Testing</h3>
+      <p class="tech-desc">Mechanical resonance response for screening stiffness/defect changes.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Fast screening</li>
+          <li>Good for production sorting</li>
+          <li>Detects gross anomalies</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Not localizing</li>
+          <li>Needs baseline</li>
+          <li>Geometry sensitive</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Typically 0 to +50 °C (instrument); part may be warmer if fixtured</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Many solids; requires consistent geometry and boundary conditions</p>
+        </div>
+      </div>
+    </section>
+    <section class="technique" data-tech="Vibration Analysis" hidden>
+      <h3>Vibration Analysis</h3>
+      <p class="tech-desc">Condition monitoring of rotating equipment via vibration trending.</p>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>Advantages</h4>
+          <ul>
+          <li>Excellent for rotating assets</li>
+          <li>Early warning via trends</li>
+          <li>Non-intrusive</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Limitations</h4>
+          <ul>
+          <li>Not a direct material flaw method</li>
+          <li>Operating condition dependent</li>
+          <li>Expertise required</li>
+          </ul>
+        </div>
+
+        <div class="tech-card">
+          <h4>Temperature</h4>
+          <p>Sensor dependent (often -40 to +120 °C; higher with specialty sensors)</p>
+        </div>
+
+        <div class="tech-card">
+          <h4>Material / limitations</h4>
+          <p>Machines/structures (not material-specific)</p>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <script>
+      (function () {
+        const select = document.getElementById('techSelect');
+        const sections = Array.from(document.querySelectorAll('.technique'));
+
+        function show(name) {
+          sections.forEach(sec => {
+            sec.hidden = (sec.getAttribute('data-tech') !== name);
+          });
+        }
+
+        if (select && select.options.length) {
+          show(select.value);
+        }
+
+        select.addEventListener('change', () => show(select.value));
+      })();
+    </script>
+
+    <style>
+      .tech-picker {
+        margin: 18px 0 10px;
+        display: grid;
+        gap: 8px;
+      }
+      #techSelect {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.25);
+        background: rgba(0,0,0,0.25);
+        color: #fff;
+        outline: none;
+      }
+      #techSelect option, #techSelect optgroup {
+        color: #000;
+      }
+      .tech-content {
+        margin-top: 14px;
+      }
+      .tech-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      @media (min-width: 700px) {
+        .tech-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .tech-card {
+        background: rgba(0,0,0,0.22);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 14px;
+        padding: 14px 14px 10px;
+      }
+      .tech-card h4 {
+        margin: 0 0 8px;
+        color: #F8D87C;
+      }
+      .tech-desc {
+        margin: 8px 0 0;
+        line-height: 1.6;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        line-height: 1.6;
+      }
+    </style>
+  </main>
+
+</body>
+</html>
