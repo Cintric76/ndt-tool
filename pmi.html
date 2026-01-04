@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PMI - Materials & Elements</title>
-  <link rel="stylesheet" href="style.css" />
-  
+
   <style>
     html {
       height: 100%;
@@ -58,105 +57,124 @@
       line-height: 1.6;
     }
   </style>
-
 </head>
+
 <body>
 
-  <header>
-    <a href="index.html">
-      <img src="assets/logo.png" alt="Logo" class="logo" />
-    </a>
-  </header>
+<header>
+  <a href="index.html">
+    <img src="assets/logo.png" alt="Logo" class="logo" />
+  </a>
+</header>
 
-  <main>
-    <h2>PMI - Materials &amp; Elements</h2>
-    <p>
-      Select a material. Elements are automatically sorted from <strong>highest to lowest content</strong> (based on max wt%).
-    </p>
+<main>
+  <h2>PMI - Materials &amp; Elements</h2>
 
-    <div style="margin: 14px 0;">
-      <label for="materialSelect"><strong>Material</strong></label><br/>
-      <select id="materialSelect" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.25);background: rgba(0,0,0,0.25);color:#fff;outline:none;"></select>
-    </div>
+  <p>
+    Select a material. Elements are automatically sorted from
+    <strong>highest to lowest content</strong> (based on max wt%).
+  </p>
 
-    <table style="width:100%;border-collapse:collapse;margin-top:12px;">
-      <thead>
-        <tr>
-          <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Element</th>
-          <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Min (wt%)</th>
-          <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Max (wt%)</th>
-        </tr>
-      </thead>
-      <tbody id="elementsBody"></tbody>
-    </table>
+  <div style="margin:14px 0;">
+    <label for="materialSelect"><strong>Material</strong></label><br/>
+    <select id="materialSelect"
+      style="width:100%;padding:10px 12px;border-radius:10px;
+             border:1px solid rgba(255,255,255,0.25);
+             background: rgba(0,0,0,0.25);
+             color:#fff;outline:none;">
+    </select>
+  </div>
 
-    <script>
+  <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+    <thead>
+      <tr>
+        <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Element</th>
+        <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Min (wt%)</th>
+        <th style="border:1px solid rgba(255,255,255,0.25);padding:8px;background:rgba(0,0,0,0.25);">Max (wt%)</th>
+      </tr>
+    </thead>
+    <tbody id="elementsBody"></tbody>
+  </table>
+
+<script>
+/* Element names mapping */
+const ELEMENT_NAMES = {
+  C: "Carbon",
+  Mn: "Manganese",
+  Si: "Silicon",
+  P: "Phosphorus",
+  S: "Sulfur",
+  Cr: "Chromium",
+  Ni: "Nickel",
+  Mo: "Molybdenum",
+  N: "Nitrogen",
+  Cu: "Copper",
+  Nb: "Niobium",
+  Ti: "Titanium",
+  V: "Vanadium",
+  Fe: "Iron"
+};
       const PMI_DATA = {"ASTM A106 Gr B": {"C": {"min": null, "max": 0.3}, "Mn": {"min": 0.29, "max": 1.06}, "Si": {"min": 0.1, "max": 0.35}, "P": {"min": null, "max": 0.035}, "S": {"min": null, "max": 0.035}, "Cr": {"min": null, "max": 0.4}, "Ni": {"min": null, "max": 0.4}, "Mo": {"min": null, "max": 0.15}, "Cu": {"min": null, "max": 0.4}, "V": {"min": null, "max": 0.08}}, "ASTM A516 Gr 70": {"C": {"min": null, "max": 0.27}, "Mn": {"min": 0.79, "max": 1.3}, "Si": {"min": 0.13, "max": 0.45}, "P": {"min": null, "max": 0.025}, "S": {"min": null, "max": 0.025}, "Cr": {"min": null, "max": 0.3}, "Ni": {"min": null, "max": 0.3}, "Mo": {"min": null, "max": 0.08}, "Cu": {"min": null, "max": 0.3}}, "ASTM A335 P11 (1¼Cr-½Mo)": {"C": {"min": null, "max": 0.15}, "Mn": {"min": null, "max": 0.6}, "Si": {"min": null, "max": 0.5}, "P": {"min": null, "max": 0.025}, "S": {"min": null, "max": 0.025}, "Cr": {"min": 1.0, "max": 1.5}, "Mo": {"min": 0.44, "max": 0.65}}, "ASTM A335 P22 (2¼Cr-1Mo)": {"C": {"min": 0.05, "max": 0.15}, "Mn": {"min": 0.3, "max": 0.6}, "Si": {"min": null, "max": 0.5}, "P": {"min": null, "max": 0.025}, "S": {"min": null, "max": 0.025}, "Cr": {"min": 1.9, "max": 2.6}, "Mo": {"min": 0.87, "max": 1.13}}, "AISI 304 / EN 1.4301": {"C": {"min": null, "max": 0.08}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 18.0, "max": 20.0}, "Ni": {"min": 8.0, "max": 10.5}, "N": {"min": null, "max": 0.1}}, "AISI 304L / EN 1.4307": {"C": {"min": null, "max": 0.03}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 18.0, "max": 20.0}, "Ni": {"min": 8.0, "max": 12.0}, "N": {"min": null, "max": 0.1}}, "AISI 316 / EN 1.4401": {"C": {"min": null, "max": 0.08}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 16.0, "max": 18.0}, "Ni": {"min": 10.0, "max": 14.0}, "Mo": {"min": 2.0, "max": 3.0}, "N": {"min": null, "max": 0.1}}, "AISI 316L / EN 1.4404": {"C": {"min": null, "max": 0.03}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 16.5, "max": 18.5}, "Ni": {"min": 10.0, "max": 13.0}, "Mo": {"min": 2.0, "max": 2.5}, "N": {"min": null, "max": 0.1}}, "AISI 316Ti / EN 1.4571": {"C": {"min": null, "max": 0.08}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 16.5, "max": 18.5}, "Ni": {"min": 10.5, "max": 13.5}, "Mo": {"min": 2.0, "max": 2.5}, "Ti": {"min": 0.25, "max": 0.8}}, "AISI 317L / EN 1.4438": {"C": {"min": null, "max": 0.03}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 18.0, "max": 20.0}, "Ni": {"min": 11.0, "max": 15.0}, "Mo": {"min": 3.0, "max": 4.0}, "N": {"min": null, "max": 0.1}}, "AISI 321 / EN 1.4541": {"C": {"min": null, "max": 0.08}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 17.0, "max": 19.0}, "Ni": {"min": 9.0, "max": 12.0}, "Ti": {"min": 0.25, "max": 0.8}}, "AISI 321H / EN 1.4878": {"C": {"min": 0.04, "max": 0.1}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 17.0, "max": 19.0}, "Ni": {"min": 9.0, "max": 12.0}, "Ti": {"min": 0.25, "max": 0.8}}, "AISI 347 / EN 1.4550": {"C": {"min": null, "max": 0.08}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 17.0, "max": 19.0}, "Ni": {"min": 9.0, "max": 13.0}, "Nb": {"min": 0.6, "max": 1.0}}, "AISI 347H / EN 1.4961": {"C": {"min": 0.04, "max": 0.1}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 17.0, "max": 19.0}, "Ni": {"min": 9.0, "max": 13.0}, "Nb": {"min": 0.6, "max": 1.0}}, "AISI 310 / 310S / EN 1.4841": {"C": {"min": null, "max": 0.25}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.5}, "P": {"min": null, "max": 0.045}, "S": {"min": null, "max": 0.03}, "Cr": {"min": 24.0, "max": 26.0}, "Ni": {"min": 19.0, "max": 22.0}}, "Duplex 2205 / EN 1.4462": {"C": {"min": null, "max": 0.03}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.035}, "S": {"min": null, "max": 0.015}, "Cr": {"min": 21.0, "max": 23.0}, "Ni": {"min": 4.5, "max": 6.5}, "Mo": {"min": 2.5, "max": 3.5}, "N": {"min": 0.1, "max": 0.22}}, "Super Duplex 2507 / EN 1.4410": {"C": {"min": null, "max": 0.03}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 1.0}, "P": {"min": null, "max": 0.035}, "S": {"min": null, "max": 0.015}, "Cr": {"min": 24.0, "max": 26.0}, "Ni": {"min": 6.0, "max": 8.0}, "Mo": {"min": 3.0, "max": 4.5}, "N": {"min": 0.24, "max": 0.35}}, "904L / EN 1.4539": {"C": {"min": null, "max": 0.02}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 0.7}, "P": {"min": null, "max": 0.03}, "S": {"min": null, "max": 0.01}, "Cr": {"min": 19.0, "max": 21.0}, "Ni": {"min": 24.0, "max": 26.0}, "Mo": {"min": 4.0, "max": 5.0}, "N": {"min": null, "max": 0.15}, "Cu": {"min": 1.2, "max": 2.0}}, "254 SMO / EN 1.4547": {"C": {"min": null, "max": 0.02}, "Mn": {"min": null, "max": 1.0}, "Si": {"min": null, "max": 0.7}, "P": {"min": null, "max": 0.03}, "S": {"min": null, "max": 0.01}, "Cr": {"min": 19.5, "max": 20.5}, "Ni": {"min": 17.5, "max": 18.5}, "Mo": {"min": 6.0, "max": 7.0}, "N": {"min": 0.18, "max": 0.25}, "Cu": {"min": 0.5, "max": 1.0}}, "Monel 400 / UNS N04400": {"C": {"min": null, "max": 0.3}, "Mn": {"min": null, "max": 2.0}, "Si": {"min": null, "max": 0.5}, "P": {"min": null, "max": 0.02}, "S": {"min": null, "max": 0.024}, "Ni": {"min": 63.0, "max": null}, "Cu": {"min": 28.0, "max": 34.0}, "Fe": {"min": null, "max": 2.5}}};
 
       const select = document.getElementById('materialSelect');
-      const body = document.getElementById('elementsBody');
+const body = document.getElementById('elementsBody');
 
-      const materialNames = Object.keys(PMI_DATA);
+Object.keys(PMI_DATA).forEach(name => {
+  const opt = document.createElement('option');
+  opt.value = name;
+  opt.textContent = name;
+  select.appendChild(opt);
+});
 
-      materialNames.forEach(name => {
-        const opt = document.createElement('option');
-        opt.value = name;
-        opt.textContent = name;
-        select.appendChild(opt);
-      });
+function fmt(v) {
+  if (v === null || v === undefined) return '-';
+  return (Math.round(v * 10000) / 10000).toString();
+}
 
-      function fmt(v) {
-        if (v === null || v === undefined) return '-';
-        return (Math.round(v * 10000) / 10000).toString();
-      }
+function sortKey(range) {
+  if (range.max !== null) return range.max;
+  if (range.min !== null) return range.min;
+  return 0;
+}
 
-      function sortKey(range) {
-        if (range.max !== null) return range.max;
-        if (range.min !== null) return range.min;
-        return 0;
-      }
+function render(materialName) {
+  body.innerHTML = '';
+  const elements = PMI_DATA[materialName] || {};
 
-      function render(materialName) {
-        body.innerHTML = '';
-        const elements = PMI_DATA[materialName] || {};
+  const rows = Object.entries(elements)
+    .sort((a, b) => sortKey(b[1]) - sortKey(a[1]));
 
-        const rows = Object.entries(elements)
-          .sort((a, b) => sortKey(b[1]) - sortKey(a[1]));
+  rows.forEach(([el, range]) => {
+    const fullName = ELEMENT_NAMES[el] || "Unknown";
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">
+        ${el} (${fullName})
+      </td>
+      <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">
+        ${fmt(range.min)}
+      </td>
+      <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">
+        ${fmt(range.max)}
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+}
 
-        if (!rows.length) {
-          const tr = document.createElement('tr');
-          tr.innerHTML = '<td colspan="3" style="border:1px solid rgba(255,255,255,0.25);padding:8px;">No data available for this material.</td>';
-          body.appendChild(tr);
-          return;
-        }
+const materials = Object.keys(PMI_DATA);
+if (materials.length) {
+  select.value = materials[0];
+  render(materials[0]);
+}
 
-        rows.forEach(([el, range]) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">${el}</td>
-            <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">${fmt(range.min)}</td>
-            <td style="border:1px solid rgba(255,255,255,0.25);padding:8px;">${fmt(range.max)}</td>
-          `;
-          body.appendChild(tr);
-        });
-      }
-
-      if (materialNames.length) {
-        select.value = materialNames[0];
-        render(materialNames[0]);
-      }
-
-      select.addEventListener('change', e => render(e.target.value));
-    </script>
+select.addEventListener('change', e => render(e.target.value));
+</script>
 
 <div style="margin-top:5px; text-align:center;">
-  <img src="assets/pmi.png"
-       alt="pmi"
-       style="max-width:250px; opacity:0.9;">
+  <img src="assets/pmi.png" alt="pmi" style="max-width:250px; opacity:0.9;">
 </div>
-  
 
 </main>
-
 </body>
 </html>
