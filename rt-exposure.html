@@ -1,208 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RT Exposure Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT Exposure Time (D = 2.5)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    html {
-      height: 100%;
-      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
-      background-attachment: fixed;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, rgb(42, 51, 54), rgb(181, 155, 100));
+            min-height: 100vh;
+            padding: 12px;
+        }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
-    header {
-      padding: 20px 0 10px;
-    }
+        .back-arrow {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
 
-    .logo {
-      height: 90px;
-      display: block;
-      margin: 0 auto;
-    }
+        .back-arrow:hover {
+            transform: translateX(-4px);
+        }
 
-    main {
-      width: 100%;
-      max-width: 420px;
-      padding: 20px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.1);
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      text-align: center;
-    }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
 
-    .field {
-      max-width: 360px;
-      margin: 0 auto 18px;
-      text-align: center;
-    }
+        .form-group {
+            margin-bottom: 10px;
+        }
 
-    .field label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #F8D87C;
-    }
+        label {
+            display: block;
+            color: #F4D03F;
+            margin-bottom: 4px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    .field select,
-    .field input {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-    }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: white;
+        }
 
-    button {
-      width: 100%;
-      max-width: 360px;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #b59b64;
-      color: #000;
-      font-weight: bold;
-      font-size: 16px;
-      margin: 10px auto 0;
-      display: block;
-      cursor: pointer;
-    }
+        select {
+            cursor: pointer;
+        }
 
-    button:hover {
-      background-color: #e2c682;
-    }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #B59A64;
+            color: black;
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
 
-    #result {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.25);
-      font-size: 18px;
-    }
+        .btn:hover:not(:disabled) {
+            background: #A08850;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
 
-    .illustration {
-      margin-top: 24px;
-      text-align: center;
-    }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
 
-    .illustration img {
-      max-width: 250px;
-      opacity: 0.9;
-    }
-  </style>
+        .timer-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .timer-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .timer-text {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin: 0 12px;
+        }
+
+        .warning-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .warning-dot.orange {
+            background: orange;
+        }
+
+        .warning-dot.red {
+            background: red;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .timer-controls button {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .timer-controls button:hover:not(:disabled) {
+            background: #45a049;
+        }
+
+        .timer-controls button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .logo-section {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .logo-section img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+    </style>
 </head>
-
 <body>
+    <a href="index.html" class="back-arrow">←</a>
+    
+    <div class="container">
+        <h1>RT Exposure Time (D = 2.5)</h1>
 
-<header>
-  <a href="index.html">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-  </a>
-</header>
+        <div class="form-group">
+            <label for="source">Source</label>
+            <select id="source">
+                <option value="Ir-192">Ir-192</option>
+                <option value="Se-75">Se-75</option>
+                <option value="Co-60">Co-60</option>
+            </select>
+        </div>
 
-<main>
+        <div class="form-group">
+            <label for="activity">Activity (Ci)</label>
+            <input type="number" id="activity" step="any" placeholder="Enter activity">
+        </div>
 
-  <div class="field">
-    <label for="source">Source</label>
-    <select id="source">
-      <option value="Ir-192">Ir-192</option>
-      <option value="Se-75">Se-75</option>
-      <option value="Co-60">Co-60</option>
-    </select>
-  </div>
+        <div class="form-group">
+            <label for="filmType">Film type (Agfa)</label>
+            <select id="filmType">
+                <option value="D4" selected>D4</option>
+                <option value="D5">D5</option>
+                <option value="D7">D7</option>
+            </select>
+        </div>
 
-  <div class="field">
-    <label for="filmType">Film Type</label>
-    <select id="filmType">
-      <option value="D4">D4</option>
-      <option value="D5">D5</option>
-      <option value="D7" selected>D7</option>
-    </select>
-  </div>
+        <div class="form-group">
+            <label for="thickness">Steel thickness (mm)</label>
+            <input type="number" id="thickness" step="any" placeholder="Enter thickness">
+        </div>
 
-  <div class="field">
-    <label for="activity">Activity (Ci)</label>
-    <input type="number" id="activity" step="any">
-  </div>
+        <div class="form-group">
+            <label for="distance">FFD distance (cm)</label>
+            <input type="number" id="distance" step="any" placeholder="Enter distance">
+        </div>
 
-  <div class="field">
-    <label for="thickness">Steel Thickness (mm)</label>
-    <input type="number" id="thickness" step="any">
-  </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <button class="btn" onclick="calculate()">Calculate</button>
+        </div>
 
-  <div class="field">
-    <label for="distance">FFD Distance (cm)</label>
-    <input type="number" id="distance" step="any">
-  </div>
+        <div id="timerSection" class="timer-section" style="display: none;">
+            <div class="timer-display">
+                <div id="warningDotLeft" class="warning-dot" style="display: none;"></div>
+                <div class="timer-text" id="timerDisplay">0:00</div>
+                <div id="warningDotRight" class="warning-dot" style="display: none;"></div>
+            </div>
+            <div class="timer-controls">
+                <button id="startBtn" onclick="startTimer()">Start</button>
+                <button id="stopBtn" onclick="stopTimer()" disabled>Stop</button>
+                <button id="resetBtn" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
 
-  <button onclick="calculate()">Calculate</button>
+        <div class="logo-section">
+            <img src="assets/rx.png" alt="RX Logo">
+        </div>
+    </div>
 
-  <div id="result"></div>
+    <script>
+        const filmFactors = {
+            'Ir-192': {'D4': 3.0, 'D5': 1.5, 'D7': 1.0},
+            'Se-75': {'D4': 2.4, 'D5': 1.4, 'D7': 1.0},
+            'Co-60': {'D4': 3.0, 'D5': 1.5, 'D7': 1.0}
+        };
 
-  <div class="illustration">
-    <img src="assets/rx.png" alt="rx">
-  </div>
+        const muBySource = {
+            'Ir-192': 0.047529066436122015,
+            'Se-75': 0.06672950045788328,
+            'Co-60': 0.03195864092343074
+        };
 
-</main>
+        const kBySource = {
+            'Ir-192': 0.71070778151011,
+            'Se-75': 1.5335704855042178,
+            'Co-60': 0.5489183450213326
+        };
 
-<script>
-  const filmFactors = {
-    "Ir-192": { D4: 3.0, D5: 1.5, D7: 1.0 },
-    "Se-75": { D4: 2.4, D5: 1.4, D7: 1.0 },
-    "Co-60": { D4: 3.0, D5: 1.5, D7: 1.0 }
-  };
+        let resultSeconds = null;
+        let remainingSeconds = 0;
+        let isRunning = false;
+        let timerInterval = null;
 
-  const muBySource = {
-    "Ir-192": 0.047529066436122015,
-    "Se-75": 0.06672950045788328,
-    "Co-60": 0.03195864092343074
-  };
+        function calculate() {
+            const source = document.getElementById('source').value;
+            const activity = parseFloat(document.getElementById('activity').value);
+            const filmType = document.getElementById('filmType').value;
+            const thickness = parseFloat(document.getElementById('thickness').value);
+            const distance = parseFloat(document.getElementById('distance').value);
 
-  const kBySource = {
-    "Ir-192": 0.71070778151011,
-    "Se-75": 1.5335704855042178,
-    "Co-60": 0.5489183450213326
-  };
+            if (!activity || !thickness || !distance || activity <= 0 || thickness <= 0 || distance <= 0) {
+                return;
+            }
 
-  function calculate() {
-    const source = document.getElementById("source").value;
-    const filmType = document.getElementById("filmType").value;
-    const activity = parseFloat(document.getElementById("activity").value);
-    const thickness = parseFloat(document.getElementById("thickness").value);
-    const distance = parseFloat(document.getElementById("distance").value);
-    const result = document.getElementById("result");
+            const mu = muBySource[source];
+            const k = kBySource[source];
+            const filmFactor = filmFactors[source][filmType];
 
-    if (isNaN(activity) || isNaN(thickness) || isNaN(distance)) {
-      result.textContent = "Please fill in all values.";
-      return;
-    }
+            const seconds = k * filmFactor * (Math.pow(distance, 2) / activity) * Math.exp(mu * thickness);
 
-    const mu = muBySource[source];
-    const k = kBySource[source];
-    const filmFactor = filmFactors[source][filmType];
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
 
-    const seconds =
-      k * filmFactor *
-      (Math.pow(distance, 2) / activity) *
-      Math.exp(mu * thickness);
+            resultSeconds = Math.round(seconds);
+            remainingSeconds = resultSeconds;
+            isRunning = false;
 
-    const min = Math.floor(seconds / 60);
-    const sec = Math.round(seconds % 60);
+            updateDisplay();
+            document.getElementById('timerSection').style.display = 'block';
+            updateButtons();
+        }
 
-    result.textContent = `Estimated exposure time: ${min} min ${sec} sec`;
-  }
-</script>
+        function startTimer() {
+            if (remainingSeconds <= 0) return;
 
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            timerInterval = setInterval(() => {
+                if (remainingSeconds <= 1) {
+                    clearInterval(timerInterval);
+                    remainingSeconds = 0;
+                    isRunning = false;
+                    updateDisplay();
+                    updateButtons();
+                } else {
+                    remainingSeconds--;
+                    updateDisplay();
+                }
+            }, 1000);
+
+            isRunning = true;
+            updateButtons();
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            isRunning = false;
+            updateButtons();
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            remainingSeconds = resultSeconds || 0;
+            isRunning = false;
+            updateDisplay();
+            updateButtons();
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('timerDisplay').textContent = formatTime(remainingSeconds);
+
+            const showWarning = remainingSeconds <= 5;
+            const dotLeft = document.getElementById('warningDotLeft');
+            const dotRight = document.getElementById('warningDotRight');
+
+            if (showWarning) {
+                const color = remainingSeconds === 0 ? 'red' : 'orange';
+                dotLeft.className = `warning-dot ${color}`;
+                dotRight.className = `warning-dot ${color}`;
+                dotLeft.style.display = 'block';
+                dotRight.style.display = 'block';
+            } else {
+                dotLeft.style.display = 'none';
+                dotRight.style.display = 'none';
+            }
+        }
+
+        function updateButtons() {
+            document.getElementById('startBtn').disabled = isRunning;
+            document.getElementById('stopBtn').disabled = !isRunning;
+        }
+    </script>
 </body>
 </html>
