@@ -1,340 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pipe Chart</title>
-  <link rel="stylesheet" href="style.css" />
-  
-  <style>
-    html {
-      height: 100%;
-      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
-      background-attachment: fixed;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipe Chart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: transparent;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, rgb(42, 51, 54), rgb(181, 155, 100));
+            min-height: 100vh;
+            padding: 12px;
+        }
 
-    header {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px 0;
-      position: relative;
-      z-index: 2;
-    }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
-    .logo {
-      height: 100px;
-      cursor: pointer;
-      display: block;
-    }
+        .back-arrow {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
 
-    main {
-      padding: 20px;
-      max-width: 600px;
-      width: 90%;
-      text-align: left;
-    }
+        .back-arrow:hover {
+            transform: translateX(-4px);
+        }
 
-    h2 {
-      color: #F8D87C;
-      text-align: center;
-    }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
 
-    p {
-      margin-bottom: 12px;
-      line-height: 1.6;
-    }
-  </style>
+        p {
+            color: white;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            color: #F4D03F;
+            margin-bottom: 4px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .result-row {
+            color: white;
+            margin: 8px 0;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .result-row strong {
+            color: #F4D03F;
+        }
+
+        .table-section {
+            margin-top: 20px;
+        }
+
+        .table-section h3 {
+            color: #F4D03F;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 280px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            color: #F4D03F;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        tr.selected {
+            background: rgba(244, 208, 63, 0.2);
+        }
+
+        .hint {
+            color: white;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .logo-section {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .logo-section img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
+    <a href="index.html" class="back-arrow">←</a>
+    
+    <div class="container">
+        <h1>Pipe Chart</h1>
 
-  <header>
-    <a href="index.html">
-      <img src="assets/logo.png" alt="Logo" class="logo" />
-    </a>
-  </header>
+        <p>
+            Select a <strong>pipe size</strong> and <strong>schedule</strong> to find
+            the wall thickness. Based on <strong>ASME B36.10M / B36.19M</strong>.
+        </p>
 
-  <main>
-    <h2>Pipe Chart</h2>
+        <div class="form-group">
+            <label for="pipeSelect">Pipe size</label>
+            <select id="pipeSelect"></select>
+        </div>
 
-   
+        <div class="form-group">
+            <label for="scheduleSelect">Schedule</label>
+            <select id="scheduleSelect" disabled></select>
+        </div>
 
-    <div class="pipe-picker">
-      <label for="pipeSelect"><strong>Pipe size</strong></label>
-      <select id="pipeSelect"></select>
+        <div class="result-section" id="resultCard" hidden>
+            <div class="result-row">
+                <strong>Selected:</strong> <span id="resultSelected">—</span>
+            </div>
+            <div class="result-row">
+                <strong>Wall thickness (t):</strong> <span id="resultThickness">—</span>
+            </div>
+        </div>
 
-      <label for="scheduleSelect"><strong>Schedule</strong></label>
-      <select id="scheduleSelect" disabled></select>
-    </div>
+        <div class="table-section" id="tableWrap" hidden>
+            <h3>All schedules for this pipe</h3>
+            <div class="table-scroll">
+                <table id="scheduleTable">
+                    <thead>
+                        <tr>
+                            <th>Schedule</th>
+                            <th>t (mm)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <p class="hint">Note: Pipe dimensions based on ASME B36.10M / ASME B36.19M (NPS & Schedule system).</p>
+        </div>
 
-    <div id="resultCard" class="result-card" hidden>
-      <div class="result-line">
-        <span class="result-label">Selected</span>
-        <span id="resultSelected" class="result-value"></span>
-      </div>
-      <div class="result-line">
-        <span class="result-label">Wall thickness (t)</span>
-        <span id="resultThickness" class="result-value"></span>
-      </div>
-    </div>
-
-    <div id="tableWrap" class="table-wrap" hidden>
-      <h3 class="subhead">All schedules for this pipe</h3>
-      <div class="table-scroll">
-        <table class="pipe-table" id="scheduleTable" aria-label="Schedule thickness table">
-          <thead>
-            <tr>
-              <th>Schedule</th>
-              <th>t (mm)</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <p class="hint">Note: Pipe dimensions based on ASME B36.10M / ASME B36.19M (NPS & Schedule system).</p>
-    </div>
-
-    <div class="pipe-image">
-      <img src="assets/pipe.png" alt="Pipe reference" />
+        <div class="logo-section">
+            <img src="assets/pipe.png" alt="Pipe reference">
+        </div>
     </div>
 
     <script>
-      (function () {
-        const DATA = [{"nps": "1/8", "dn": 6, "od": 10.3, "schedules": {"SCH 10S": 1.24, "SCH 40S": 1.73, "SCH STD": 1.73, "SCH 40": 1.73, "SCH 80S": 2.41, "SCH XS": 2.41, "SCH 80": 2.41}}, {"nps": "1/4", "dn": 8, "od": 13.7, "schedules": {"SCH 10S": 1.65, "SCH 40S": 2.24, "SCH STD": 2.24, "SCH 40": 2.24, "SCH 80S": 3.02, "SCH XS": 3.02, "SCH 80": 3.02}}, {"nps": "3/8", "dn": 10, "od": 17.1, "schedules": {"SCH 10S": 1.65, "SCH 40S": 2.31, "SCH STD": 2.31, "SCH 40": 2.31, "SCH 80S": 3.2, "SCH XS": 3.2, "SCH 80": 3.2}}, {"nps": "1/2", "dn": 15, "od": 21.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.11, "SCH 40S": 2.77, "SCH STD": 2.77, "SCH 40": 2.77, "SCH 80S": 3.73, "SCH XS": 3.73, "SCH 80": 3.73, "SCH 140": 4.78, "SCH 160": 7.47}}, {"nps": "3/4", "dn": 20, "od": 26.7, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.11, "SCH 40S": 2.87, "SCH STD": 2.87, "SCH 40": 2.87, "SCH 80S": 3.91, "SCH XS": 3.91, "SCH 80": 3.91, "SCH 140": 5.56, "SCH 160": 7.82}}, {"nps": "1", "dn": 25, "od": 33.4, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.38, "SCH STD": 3.38, "SCH 40": 3.38, "SCH 80S": 4.55, "SCH XS": 4.55, "SCH 80": 4.55, "SCH 140": 6.35, "SCH 160": 9.09}}, {"nps": "1 1/4", "dn": 32, "od": 42.2, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.56, "SCH STD": 3.56, "SCH 40": 3.56, "SCH 80S": 4.85, "SCH XS": 4.85, "SCH 80": 4.85, "SCH 140": 6.35, "SCH 160": 9.7}}, {"nps": "1 1/2", "dn": 40, "od": 48.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.68, "SCH STD": 3.68, "SCH 40": 3.68, "SCH 80S": 5.08, "SCH XS": 5.08, "SCH 80": 5.08, "SCH 140": 7.14, "SCH 160": 10.15}}, {"nps": "2", "dn": 50, "od": 60.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.91, "SCH STD": 3.91, "SCH 40": 3.91, "SCH 80S": 5.54, "SCH XS": 5.54, "SCH 80": 5.54, "SCH 140": 8.74, "SCH 160": 11.07}}, {"nps": "2 1/2", "dn": 65, "od": 73.0, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.16, "SCH STD": 5.16, "SCH 40": 5.16, "SCH 80S": 7.01, "SCH XS": 7.01, "SCH 80": 7.01, "SCH 140": 9.53, "SCH 160": 14.02}}, {"nps": "3", "dn": 80, "od": 88.9, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.49, "SCH STD": 5.49, "SCH 40": 5.49, "SCH 80S": 7.62, "SCH XS": 7.62, "SCH 80": 7.62, "SCH 140": 11.13, "SCH 160": 15.24}}, {"nps": "3 1/2", "dn": 90, "od": 101.6, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.74, "SCH STD": 5.74, "SCH 40": 5.74, "SCH 80S": 8.08, "SCH XS": 8.08, "SCH 80": 8.08}}, {"nps": "4", "dn": 100, "od": 114.3, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 6.02, "SCH STD": 6.02, "SCH 40": 6.02, "SCH 80S": 8.56, "SCH XS": 8.56, "SCH 80": 8.56, "SCH 120": 11.13, "SCH 160": 13.49, "SCH XXS": 17.12}}, {"nps": "5", "dn": 125, "od": 141.3, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.4, "SCH 40S": 6.55, "SCH STD": 6.55, "SCH 40": 6.55, "SCH 80S": 9.53, "SCH XS": 9.53, "SCH 80": 9.53, "SCH 120": 12.7, "SCH 160": 15.88, "SCH XXS": 19.05}}, {"nps": "6", "dn": 150, "od": 168.3, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.4, "SCH 40S": 7.11, "SCH STD": 7.11, "SCH 40": 7.11, "SCH 80S": 10.97, "SCH XS": 10.97, "SCH 80": 10.97, "SCH 120": 14.27, "SCH 160": 18.26, "SCH XXS": 21.95}}, {"nps": "8", "dn": 200, "od": 219.1, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.76, "SCH 20": 6.35, "SCH 30": 7.04, "SCH 40S": 8.18, "SCH STD": 8.18, "SCH 40": 8.18, "SCH 60": 10.31, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 12.7, "SCH 100": 15.09, "SCH 120": 18.26, "SCH 140": 20.62, "SCH 160": 23.01, "SCH XXS": 22.23}}, {"nps": "10", "dn": 250, "od": 273.1, "schedules": {"SCH 5S": 3.4, "SCH 10S": 4.19, "SCH 20": 6.35, "SCH 30": 7.8, "SCH 40S": 9.27, "SCH STD": 9.27, "SCH 40": 9.27, "SCH 60": 12.7, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 15.09, "SCH 100": 18.26, "SCH 120": 21.44, "SCH 140": 25.4, "SCH 160": 28.58, "SCH XXS": 25.4}}, {"nps": "12", "dn": 300, "od": 323.9, "schedules": {"SCH 5S": 3.96, "SCH 10S": 4.57, "SCH 20": 6.35, "SCH 30": 8.38, "SCH 40S": 9.53, "SCH STD": 9.53, "SCH 40": 10.31, "SCH 60": 14.27, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 17.48, "SCH 100": 21.44, "SCH 120": 25.4, "SCH 140": 28.58, "SCH 160": 33.32, "SCH XXS": 25.4}}, {"nps": "14", "dn": 350, "od": 355.6, "schedules": {"SCH 5S": 3.96, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 9.53, "SCH STD": 9.53, "SCH 40": 11.13, "SCH 60": 15.09, "SCH XS": 12.7, "SCH 80": 19.05, "SCH 100": 23.83, "SCH 120": 27.79, "SCH 140": 31.75, "SCH 160": 35.71}}, {"nps": "16", "dn": 400, "od": 406.4, "schedules": {"SCH 5S": 4.19, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 9.53, "SCH STD": 9.53, "SCH 40": 12.7, "SCH 60": 16.66, "SCH XS": 12.7, "SCH 80": 21.44, "SCH 100": 26.19, "SCH 120": 30.96, "SCH 140": 36.53, "SCH 160": 40.49}}, {"nps": "18", "dn": 450, "od": 457.2, "schedules": {"SCH 5S": 4.19, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 11.13, "SCH STD": 9.53, "SCH 40": 14.27, "SCH 60": 19.05, "SCH XS": 12.7, "SCH 80": 23.83, "SCH 100": 29.36, "SCH 120": 34.93, "SCH 140": 39.67, "SCH 160": 45.24}}, {"nps": "20", "dn": 500, "od": 508.0, "schedules": {"SCH 5S": 4.78, "SCH 10S": 5.54, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 12.7, "SCH STD": 9.53, "SCH 40": 15.09, "SCH 60": 20.62, "SCH XS": 12.7, "SCH 80": 26.19, "SCH 100": 32.54, "SCH 120": 38.1, "SCH 140": 44.45, "SCH 160": 50.01}}, {"nps": "22", "dn": 0, "od": 559.0, "schedules": {"SCH 5S": 4.78, "SCH 10S": 5.54, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 12.7, "SCH STD": 9.53, "SCH 60": 22.23, "SCH XS": 12.7, "SCH 80": 28.58, "SCH 100": 34.93, "SCH 120": 41.28, "SCH 140": 47.63, "SCH 160": 53.98}}, {"nps": "24", "dn": 600, "od": 610.0, "schedules": {"SCH 5S": 5.54, "SCH 10S": 6.35, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 14.27, "SCH STD": 9.53, "SCH 40": 17.48, "SCH 60": 24.61, "SCH XS": 12.7, "SCH 80": 30.96, "SCH 100": 38.89, "SCH 120": 46.02, "SCH 140": 52.37, "SCH 160": 59.54}}, {"nps": "26", "dn": 0, "od": 660.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "28", "dn": 700, "od": 711.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "30", "dn": 0, "od": 762.0, "schedules": {"SCH 5S": 6.35, "SCH 10S": 7.92, "SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "32", "dn": 800, "od": 813.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 17.48, "SCH XS": 12.7}}, {"nps": "34", "dn": 0, "od": 884.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 17.48, "SCH XS": 12.7}}, {"nps": "36", "dn": 900, "od": 914.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 19.05, "SCH XS": 12.7}}, {"nps": "38", "dn": 0, "od": 965.0, "schedules": {"SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "40", "dn": 1000, "od": 1016.0, "schedules": {"SCH 40S": 9.53, "SCH 40": 12.7, "SCH XS": 12.7}}, {"nps": "42", "dn": 0, "od": 1067.0, "schedules": {"SCH 10": 12.7, "SCH 20": 15.88, "SCH 40S": 9.53, "SCH 40": 19.05, "SCH XS": 12.7}}, {"nps": "44", "dn": 1100, "od": 1118.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}, {"nps": "46", "dn": 0, "od": 1168.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}, {"nps": "48", "dn": 1200, "od": 1219.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}];
+        (function () {
+            const DATA = [{"nps": "1/8", "dn": 6, "od": 10.3, "schedules": {"SCH 10S": 1.24, "SCH 40S": 1.73, "SCH STD": 1.73, "SCH 40": 1.73, "SCH 80S": 2.41, "SCH XS": 2.41, "SCH 80": 2.41}}, {"nps": "1/4", "dn": 8, "od": 13.7, "schedules": {"SCH 10S": 1.65, "SCH 40S": 2.24, "SCH STD": 2.24, "SCH 40": 2.24, "SCH 80S": 3.02, "SCH XS": 3.02, "SCH 80": 3.02}}, {"nps": "3/8", "dn": 10, "od": 17.1, "schedules": {"SCH 10S": 1.65, "SCH 40S": 2.31, "SCH STD": 2.31, "SCH 40": 2.31, "SCH 80S": 3.2, "SCH XS": 3.2, "SCH 80": 3.2}}, {"nps": "1/2", "dn": 15, "od": 21.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.11, "SCH 40S": 2.77, "SCH STD": 2.77, "SCH 40": 2.77, "SCH 80S": 3.73, "SCH XS": 3.73, "SCH 80": 3.73, "SCH 140": 4.78, "SCH 160": 7.47}}, {"nps": "3/4", "dn": 20, "od": 26.7, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.11, "SCH 40S": 2.87, "SCH STD": 2.87, "SCH 40": 2.87, "SCH 80S": 3.91, "SCH XS": 3.91, "SCH 80": 3.91, "SCH 140": 5.56, "SCH 160": 7.82}}, {"nps": "1", "dn": 25, "od": 33.4, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.38, "SCH STD": 3.38, "SCH 40": 3.38, "SCH 80S": 4.55, "SCH XS": 4.55, "SCH 80": 4.55, "SCH 140": 6.35, "SCH 160": 9.09}}, {"nps": "1 1/4", "dn": 32, "od": 42.2, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.56, "SCH STD": 3.56, "SCH 40": 3.56, "SCH 80S": 4.85, "SCH XS": 4.85, "SCH 80": 4.85, "SCH 140": 6.35, "SCH 160": 9.7}}, {"nps": "1 1/2", "dn": 40, "od": 48.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.68, "SCH STD": 3.68, "SCH 40": 3.68, "SCH 80S": 5.08, "SCH XS": 5.08, "SCH 80": 5.08, "SCH 140": 7.14, "SCH 160": 10.15}}, {"nps": "2", "dn": 50, "od": 60.3, "schedules": {"SCH 5S": 1.65, "SCH 10S": 2.77, "SCH 40S": 3.91, "SCH STD": 3.91, "SCH 40": 3.91, "SCH 80S": 5.54, "SCH XS": 5.54, "SCH 80": 5.54, "SCH 140": 8.74, "SCH 160": 11.07}}, {"nps": "2 1/2", "dn": 65, "od": 73.0, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.16, "SCH STD": 5.16, "SCH 40": 5.16, "SCH 80S": 7.01, "SCH XS": 7.01, "SCH 80": 7.01, "SCH 140": 9.53, "SCH 160": 14.02}}, {"nps": "3", "dn": 80, "od": 88.9, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.49, "SCH STD": 5.49, "SCH 40": 5.49, "SCH 80S": 7.62, "SCH XS": 7.62, "SCH 80": 7.62, "SCH 140": 11.13, "SCH 160": 15.24}}, {"nps": "3 1/2", "dn": 90, "od": 101.6, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 5.74, "SCH STD": 5.74, "SCH 40": 5.74, "SCH 80S": 8.08, "SCH XS": 8.08, "SCH 80": 8.08}}, {"nps": "4", "dn": 100, "od": 114.3, "schedules": {"SCH 5S": 2.11, "SCH 10S": 3.05, "SCH 40S": 6.02, "SCH STD": 6.02, "SCH 40": 6.02, "SCH 80S": 8.56, "SCH XS": 8.56, "SCH 80": 8.56, "SCH 120": 11.13, "SCH 160": 13.49, "SCH XXS": 17.12}}, {"nps": "5", "dn": 125, "od": 141.3, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.4, "SCH 40S": 6.55, "SCH STD": 6.55, "SCH 40": 6.55, "SCH 80S": 9.53, "SCH XS": 9.53, "SCH 80": 9.53, "SCH 120": 12.7, "SCH 160": 15.88, "SCH XXS": 19.05}}, {"nps": "6", "dn": 150, "od": 168.3, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.4, "SCH 40S": 7.11, "SCH STD": 7.11, "SCH 40": 7.11, "SCH 80S": 10.97, "SCH XS": 10.97, "SCH 80": 10.97, "SCH 120": 14.27, "SCH 160": 18.26, "SCH XXS": 21.95}}, {"nps": "8", "dn": 200, "od": 219.1, "schedules": {"SCH 5S": 2.77, "SCH 10S": 3.76, "SCH 20": 6.35, "SCH 30": 7.04, "SCH 40S": 8.18, "SCH STD": 8.18, "SCH 40": 8.18, "SCH 60": 10.31, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 12.7, "SCH 100": 15.09, "SCH 120": 18.26, "SCH 140": 20.62, "SCH 160": 23.01, "SCH XXS": 22.23}}, {"nps": "10", "dn": 250, "od": 273.1, "schedules": {"SCH 5S": 3.4, "SCH 10S": 4.19, "SCH 20": 6.35, "SCH 30": 7.8, "SCH 40S": 9.27, "SCH STD": 9.27, "SCH 40": 9.27, "SCH 60": 12.7, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 15.09, "SCH 100": 18.26, "SCH 120": 21.44, "SCH 140": 25.4, "SCH 160": 28.58, "SCH XXS": 25.4}}, {"nps": "12", "dn": 300, "od": 323.9, "schedules": {"SCH 5S": 3.96, "SCH 10S": 4.57, "SCH 20": 6.35, "SCH 30": 8.38, "SCH 40S": 9.53, "SCH STD": 9.53, "SCH 40": 10.31, "SCH 60": 14.27, "SCH 80S": 12.7, "SCH XS": 12.7, "SCH 80": 17.48, "SCH 100": 21.44, "SCH 120": 25.4, "SCH 140": 28.58, "SCH 160": 33.32, "SCH XXS": 25.4}}, {"nps": "14", "dn": 350, "od": 355.6, "schedules": {"SCH 5S": 3.96, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 9.53, "SCH STD": 9.53, "SCH 40": 11.13, "SCH 60": 15.09, "SCH XS": 12.7, "SCH 80": 19.05, "SCH 100": 23.83, "SCH 120": 27.79, "SCH 140": 31.75, "SCH 160": 35.71}}, {"nps": "16", "dn": 400, "od": 406.4, "schedules": {"SCH 5S": 4.19, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 9.53, "SCH STD": 9.53, "SCH 40": 12.7, "SCH 60": 16.66, "SCH XS": 12.7, "SCH 80": 21.44, "SCH 100": 26.19, "SCH 120": 30.96, "SCH 140": 36.53, "SCH 160": 40.49}}, {"nps": "18", "dn": 450, "od": 457.2, "schedules": {"SCH 5S": 4.19, "SCH 10S": 4.78, "SCH 10": 6.35, "SCH 20": 7.92, "SCH 30": 11.13, "SCH STD": 9.53, "SCH 40": 14.27, "SCH 60": 19.05, "SCH XS": 12.7, "SCH 80": 23.83, "SCH 100": 29.36, "SCH 120": 34.93, "SCH 140": 39.67, "SCH 160": 45.24}}, {"nps": "20", "dn": 500, "od": 508.0, "schedules": {"SCH 5S": 4.78, "SCH 10S": 5.54, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 12.7, "SCH STD": 9.53, "SCH 40": 15.09, "SCH 60": 20.62, "SCH XS": 12.7, "SCH 80": 26.19, "SCH 100": 32.54, "SCH 120": 38.1, "SCH 140": 44.45, "SCH 160": 50.01}}, {"nps": "22", "dn": 0, "od": 559.0, "schedules": {"SCH 5S": 4.78, "SCH 10S": 5.54, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 12.7, "SCH STD": 9.53, "SCH 60": 22.23, "SCH XS": 12.7, "SCH 80": 28.58, "SCH 100": 34.93, "SCH 120": 41.28, "SCH 140": 47.63, "SCH 160": 53.98}}, {"nps": "24", "dn": 600, "od": 610.0, "schedules": {"SCH 5S": 5.54, "SCH 10S": 6.35, "SCH 10": 6.35, "SCH 20": 9.53, "SCH 30": 14.27, "SCH STD": 9.53, "SCH 40": 17.48, "SCH 60": 24.61, "SCH XS": 12.7, "SCH 80": 30.96, "SCH 100": 38.89, "SCH 120": 46.02, "SCH 140": 52.37, "SCH 160": 59.54}}, {"nps": "26", "dn": 0, "od": 660.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "28", "dn": 700, "od": 711.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "30", "dn": 0, "od": 762.0, "schedules": {"SCH 5S": 6.35, "SCH 10S": 7.92, "SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "32", "dn": 800, "od": 813.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 17.48, "SCH XS": 12.7}}, {"nps": "34", "dn": 0, "od": 884.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 17.48, "SCH XS": 12.7}}, {"nps": "36", "dn": 900, "od": 914.0, "schedules": {"SCH 10": 7.92, "SCH 20": 12.7, "SCH 30": 15.88, "SCH STD": 9.53, "SCH 40": 19.05, "SCH XS": 12.7}}, {"nps": "38", "dn": 0, "od": 965.0, "schedules": {"SCH STD": 9.53, "SCH XS": 12.7}}, {"nps": "40", "dn": 1000, "od": 1016.0, "schedules": {"SCH 40S": 9.53, "SCH 40": 12.7, "SCH XS": 12.7}}, {"nps": "42", "dn": 0, "od": 1067.0, "schedules": {"SCH 10": 12.7, "SCH 20": 15.88, "SCH 40S": 9.53, "SCH 40": 19.05, "SCH XS": 12.7}}, {"nps": "44", "dn": 1100, "od": 1118.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}, {"nps": "46", "dn": 0, "od": 1168.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}, {"nps": "48", "dn": 1200, "od": 1219.0, "schedules": {"SCH 40S": 9.53, "SCH XS": 12.7}}];
 
-        const pipeSelect = document.getElementById('pipeSelect');
-        const scheduleSelect = document.getElementById('scheduleSelect');
+            const pipeSelect = document.getElementById('pipeSelect');
+            const scheduleSelect = document.getElementById('scheduleSelect');
 
-        const resultCard = document.getElementById('resultCard');
-        const resultSelected = document.getElementById('resultSelected');
-        const resultThickness = document.getElementById('resultThickness');
+            const resultCard = document.getElementById('resultCard');
+            const resultSelected = document.getElementById('resultSelected');
+            const resultThickness = document.getElementById('resultThickness');
 
-        const tableWrap = document.getElementById('tableWrap');
-        const tableBody = document.querySelector('#scheduleTable tbody');
+            const tableWrap = document.getElementById('tableWrap');
+            const tableBody = document.querySelector('#scheduleTable tbody');
 
-        function fmtPipe(row) {
-          return `${row.nps}" - DN${row.dn} - ${row.od} mm`;
-        }
+            function fmtPipe(row) {
+                return `${row.nps}" - DN${row.dn} - ${row.od} mm`;
+            }
 
-        function fillPipeOptions() {
-          pipeSelect.innerHTML = '';
-          DATA.forEach((row, idx) => {
-            const opt = document.createElement('option');
-            opt.value = String(idx);
-            opt.textContent = fmtPipe(row);
-            pipeSelect.appendChild(opt);
-          });
-        }
+            function fillPipeOptions() {
+                pipeSelect.innerHTML = '';
+                DATA.forEach((row, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = String(idx);
+                    opt.textContent = fmtPipe(row);
+                    pipeSelect.appendChild(opt);
+                });
+            }
 
-        function fillScheduleOptions(row) {
-          scheduleSelect.innerHTML = '';
-          const keys = Object.keys(row.schedules);
-          keys.forEach((sch) => {
-            const opt = document.createElement('option');
-            opt.value = sch;
-            opt.textContent = sch;
-            scheduleSelect.appendChild(opt);
-          });
-          scheduleSelect.disabled = keys.length === 0;
-        }
+            function fillScheduleOptions(row) {
+                scheduleSelect.innerHTML = '';
+                const keys = Object.keys(row.schedules);
+                keys.forEach((sch) => {
+                    const opt = document.createElement('option');
+                    opt.value = sch;
+                    opt.textContent = sch;
+                    scheduleSelect.appendChild(opt);
+                });
+                scheduleSelect.disabled = keys.length === 0;
+            }
 
-        function fillScheduleTable(row) {
-          tableBody.innerHTML = '';
-          const entries = Object.entries(row.schedules)
-            .sort((a, b) => a[0].localeCompare(b[0], undefined, {numeric: true, sensitivity: 'base'}));
+            function fillScheduleTable(row) {
+                tableBody.innerHTML = '';
+                const entries = Object.entries(row.schedules)
+                    .sort((a, b) => a[0].localeCompare(b[0], undefined, {numeric: true, sensitivity: 'base'}));
 
-          entries.forEach(([sch, t]) => {
-            const tr = document.createElement('tr');
-            tr.tabIndex = 0;
-            tr.innerHTML = `<td>${sch}</td><td>${t.toFixed(2)}</td>`;
-            tr.addEventListener('click', () => {
-              scheduleSelect.value = sch;
-              updateResult();
-            });
-            tr.addEventListener('keydown', (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                scheduleSelect.value = sch;
+                entries.forEach(([sch, t]) => {
+                    const tr = document.createElement('tr');
+                    tr.tabIndex = 0;
+                    tr.innerHTML = `<td>${sch}</td><td>${t.toFixed(2)}</td>`;
+                    tr.addEventListener('click', () => {
+                        scheduleSelect.value = sch;
+                        updateResult();
+                    });
+                    tr.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            scheduleSelect.value = sch;
+                            updateResult();
+                        }
+                    });
+                    tableBody.appendChild(tr);
+                });
+
+                tableWrap.hidden = entries.length === 0;
+            }
+
+            function updateResult() {
+                const row = DATA[Number(pipeSelect.value)];
+                const sch = scheduleSelect.value || null;
+
+                if (!row || !sch || row.schedules[sch] == null) {
+                    resultCard.hidden = true;
+                    return;
+                }
+
+                const t = row.schedules[sch];
+
+                resultSelected.textContent = `${fmtPipe(row)} — ${sch}`;
+                resultThickness.textContent = `${t.toFixed(2)} mm`;
+                resultCard.hidden = false;
+
+                // Highlight selected schedule in the table
+                Array.from(tableBody.querySelectorAll('tr')).forEach(tr => {
+                    const isSel = tr.firstElementChild && tr.firstElementChild.textContent === sch;
+                    tr.classList.toggle('selected', !!isSel);
+                });
+            }
+
+            // init
+            fillPipeOptions();
+            pipeSelect.value = "0";
+            const first = DATA[0];
+            fillScheduleOptions(first);
+            scheduleSelect.value = Object.keys(first.schedules)[0] || "";
+            fillScheduleTable(first);
+            updateResult();
+
+            pipeSelect.addEventListener('change', () => {
+                const row = DATA[Number(pipeSelect.value)];
+                fillScheduleOptions(row);
+                scheduleSelect.value = Object.keys(row.schedules)[0] || "";
+                fillScheduleTable(row);
                 updateResult();
-              }
             });
-            tableBody.appendChild(tr);
-          });
 
-          tableWrap.hidden = entries.length === 0;
-        }
-
-        function updateResult() {
-          const row = DATA[Number(pipeSelect.value)];
-          const sch = scheduleSelect.value || null;
-
-          if (!row || !sch || row.schedules[sch] == null) {
-            resultCard.hidden = true;
-            return;
-          }
-
-          const t = row.schedules[sch];
-
-          resultSelected.textContent = `${fmtPipe(row)} — ${sch}`;
-          resultThickness.textContent = `${t.toFixed(2)} mm`;
-          resultCard.hidden = false;
-
-          // Highlight selected schedule in the table
-          Array.from(tableBody.querySelectorAll('tr')).forEach(tr => {
-            const isSel = tr.firstElementChild && tr.firstElementChild.textContent === sch;
-            tr.classList.toggle('selected', !!isSel);
-          });
-        }
-
-        // init
-        fillPipeOptions();
-        pipeSelect.value = "0";
-        const first = DATA[0];
-        fillScheduleOptions(first);
-        scheduleSelect.value = Object.keys(first.schedules)[0] || "";
-        fillScheduleTable(first);
-        updateResult();
-
-        pipeSelect.addEventListener('change', () => {
-          const row = DATA[Number(pipeSelect.value)];
-          fillScheduleOptions(row);
-          scheduleSelect.value = Object.keys(row.schedules)[0] || "";
-          fillScheduleTable(row);
-          updateResult();
-        });
-
-        scheduleSelect.addEventListener('change', () => updateResult());
-      })();
+            scheduleSelect.addEventListener('change', () => updateResult());
+        })();
     </script>
-
-    <style>
-      .pipe-picker {
-        margin: 18px 0 10px;
-        display: grid;
-        gap: 8px;
-      }
-
-      select {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.25);
-        background: rgba(0,0,0,0.25);
-        color: #fff;
-        outline: none;
-      }
-
-      option {
-        color: #000;
-      }
-
-      .result-card {
-        margin-top: 16px;
-        background: rgba(0,0,0,0.22);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 14px;
-        padding: 14px;
-      }
-
-      .result-line {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 6px 0;
-      }
-
-      .result-label {
-        opacity: 0.9;
-      }
-
-      .result-value {
-        font-weight: 700;
-        color: #F8D87C;
-        text-align: right;
-      }
-
-      .subhead {
-        margin: 18px 0 10px;
-        color: #F8D87C;
-        text-align: left;
-      }
-
-      .table-wrap {
-        margin-top: 10px;
-      }
-
-      .table-scroll {
-        overflow-x: auto;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.15);
-        background: rgba(0,0,0,0.18);
-      }
-
-      table.pipe-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 280px;
-      }
-
-      .pipe-table th, .pipe-table td {
-        padding: 10px 12px;
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-      }
-
-      .pipe-table th {
-        text-align: left;
-        color: #F8D87C;
-        font-weight: 700;
-        background: rgba(0,0,0,0.18);
-        position: sticky;
-        top: 0;
-      }
-
-      .pipe-table tr {
-        cursor: pointer;
-      }
-
-      .pipe-table tr:hover {
-        background: rgba(255,255,255,0.06);
-      }
-
-      .pipe-table tr.selected {
-        background: rgba(248,216,124,0.14);
-      }
-
-      .hint {
-        margin: 10px 0 0;
-        opacity: 0.9;
-        font-size: 0.95em;
-      }
-
-      .pipe-image {
-        margin-top: 2px;
-        display: flex;
-        justify-content: center;
-      }
-
-      .pipe-image img {
-        max-width: 100%;
-        height: auto;
-        opacity: 0.95;
-      }
-    </style>
-  </main>
-
 </body>
 </html>
