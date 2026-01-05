@@ -1,203 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RT Check</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT Check</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    html {
-      height: 100%;
-      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
-      background-attachment: fixed;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, rgb(42, 51, 54), rgb(181, 155, 100));
+            min-height: 100vh;
+            padding: 12px;
+        }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
-    header {
-      padding: 18px 0 8px;
-    }
+        .back-arrow {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
 
-    .logo {
-      height: 85px;
-      display: block;
-      margin: 0 auto;
-    }
+        .back-arrow:hover {
+            transform: translateX(-4px);
+        }
 
-    main {
-      width: 100%;
-      max-width: 420px;   /* smaller card */
-      padding: 16px;
-      text-align: center;
-    }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
 
-    h2 {
-      color: #F8D87C;
-      margin: 8px 0 6px;
-    }
+        p {
+            color: white;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-    p {
-      line-height: 1.55;
-      margin: 0 0 14px;
-      opacity: 0.95;
-    }
+        .form-group {
+            margin-bottom: 10px;
+        }
 
-    .card {
-      background: rgba(255,255,255,0.10);
-      box-shadow: 0 0 10px rgba(0,0,0,0.35);
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 14px;
-      text-align: center;
-    }
+        label {
+            display: block;
+            color: #F4D03F;
+            margin-bottom: 4px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    .field {
-      max-width: 320px;   /* narrower inputs */
-      margin: 0 auto 12px;
-      text-align: center;
-    }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #F8D87C;
-      font-size: 15px;
-    }
+        .status-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
 
-    select {
-      width: 100%;
-      padding: 11px;
-      border-radius: 10px;
-      font-size: 15px;
-      background: rgba(0,0,0,0.25);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.18);
-    }
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
 
-    .statusRow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
+        .status-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #999;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-    .dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #999;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.25);
-    }
+        .status-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
 
-    .statusTitle {
-      font-size: 20px;
-      font-weight: 700;
-    }
+        .info-box {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
 
-    .info {
-      max-width: 320px;   /* same width as inputs */
-      margin: 10px auto 0;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.25);
-      text-align: left;
-      font-size: 14.5px;
-      line-height: 1.45;
-    }
+        .details-box {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.5;
+        }
 
-    .muted {
-      opacity: 0.9;
-    }
+        .logo-section {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-    .imgWrap {
-      margin-top: 16px;
-      text-align: center;
-    }
-
-    .imgWrap img {
-      max-width: 240px;
-      opacity: 0.9;
-    }
-
-    .footerImg {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .footerImg img {
-      max-width: 250px;
-      opacity: 0.9;
-    }
-  </style>
+        .logo-section img {
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+    </style>
 </head>
-
 <body>
-
-<header>
-  <a href="index.html">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-  </a>
-</header>
-
-<main>
-  <h2>On-Stream Check</h2>
-  <p class="muted">
-    Select source, pipe diameter and schedule. The tool returns the tangential path (L)
-    and evaluates feasibility using the predefined threshold rules. The pipe should preferably be empty during the inspection.
-  </p>
-
-  <div class="card">
-
-    <div class="field">
-      <label>Source</label>
-      <select id="sourceSelect">
-        <option value="se">Se-75</option>
-        <option value="ir" selected>Ir-192</option>
-        <option value="co">Co-60</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>Pipe diameter</label>
-      <select id="diameterSelect"></select>
-    </div>
-
-    <div class="field">
-      <label>Schedule</label>
-      <select id="scheduleSelect"></select>
-    </div>
-
-    <div class="statusRow">
-      <div id="statusDot" class="dot"></div>
-      <div id="statusTitle" class="statusTitle">—</div>
-    </div>
-
-    <div id="lValue" class="info">
-      Tangential path (L): —
-    </div>
-
-    <div id="details" class="info muted">
-      —
-    </div>
-
+    <a href="index.html" class="back-arrow">←</a>
     
+    <div class="container">
+        <h1>On-Stream Check</h1>
 
-    <div class="footerImg">
-      <img src="assets/lwaarde.png" alt="L-value">
+        <p>
+            Select source, pipe diameter and schedule. The tool returns the tangential path (L)
+            and evaluates feasibility using the predefined threshold rules. The pipe should preferably be empty during the inspection.
+        </p>
+
+        <div class="form-group">
+            <label for="sourceSelect">Source</label>
+            <select id="sourceSelect">
+                <option value="se">Se-75</option>
+                <option value="ir" selected>Ir-192</option>
+                <option value="co">Co-60</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="diameterSelect">Pipe diameter</label>
+            <select id="diameterSelect"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="scheduleSelect">Schedule</label>
+            <select id="scheduleSelect"></select>
+        </div>
+
+        <div class="status-section">
+            <div class="status-row">
+                <div id="statusDot" class="status-dot"></div>
+                <div id="statusTitle" class="status-title">—</div>
+            </div>
+
+            <div id="lValue" class="info-box">
+                Tangential path (L): —
+            </div>
+
+            <div id="details" class="details-box">
+                —
+            </div>
+
+            <div class="logo-section">
+                <img src="assets/lwaarde.png" alt="L-value">
+            </div>
+        </div>
     </div>
-
-  </div>
-</main>
 
 <script>
       // Full dataset loaded from Excel (expanded using Pipechart + DRT-CHART-FULL)
