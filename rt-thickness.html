@@ -1,179 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RT On-Stream Thickness</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT On-Stream Thickness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    html {
-      height: 100%;
-      background: linear-gradient(to bottom, #2A3336, #8A7B54, #5D88A3);
-      background-attachment: fixed;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, rgb(42, 51, 54), rgb(181, 155, 100));
+            min-height: 100vh;
+            padding: 12px;
+        }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
 
-    header {
-      padding: 18px 0 8px;
-    }
+        .back-arrow {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
 
-    .logo {
-      height: 85px;
-      display: block;
-      margin: 0 auto;
-    }
+        .back-arrow:hover {
+            transform: translateX(-4px);
+        }
 
-    main {
-      width: 100%;
-      max-width: 360px;   /* smaller, mobile-first */
-      padding: 14px;
-      text-align: center;
-    }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
 
-    h2 {
-      color: #F8D87C;
-      margin-bottom: 10px;
-    }
+        p {
+            color: white;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-    p {
-      line-height: 1.55;
-      margin-bottom: 14px;
-      font-size: 15px;
-    }
+        .form-group {
+            margin-bottom: 10px;
+        }
 
-    .field {
-      max-width: 300px;
-      margin: 0 auto 14px;
-      text-align: center;
-    }
+        label {
+            display: block;
+            color: #F4D03F;
+            margin-bottom: 4px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    .field label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      font-size: 15px;
-      color: #F8D87C;
-    }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            background: white;
+        }
 
-    .field input {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-    }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #B59A64;
+            color: black;
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+        }
 
-    button {
-      width: 100%;
-      max-width: 300px;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #b59b64;
-      color: #000;
-      font-weight: bold;
-      font-size: 16px;
-      margin: 10px auto 0;
-      display: block;
-    }
+        .btn:hover {
+            background: #A08850;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
 
-    #result {
-      max-width: 300px;
-      margin: 14px auto 0;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.25);
-      font-size: 16px;
-    }
+        .result-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    .formula {
-      margin-top: 12px;
-      font-size: 14px;
-      opacity: 0.85;
-    }
+        .formula {
+            color: white;
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            opacity: 0.9;
+        }
 
-    .illustration {
-      margin-top: 18px;
-      text-align: center;
-    }
+        .logo-section {
+            margin-top: 24px;
+            text-align: center;
+        }
 
-    .illustration img {
-      max-width: 220px;
-      opacity: 0.9;
-    }
-  </style>
+        .logo-section img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+    </style>
 </head>
-
 <body>
+    <a href="index.html" class="back-arrow">←</a>
+    
+    <div class="container">
+        <h1>RT On-Stream Thickness</h1>
 
-<header>
-  <a href="index.html">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-  </a>
-</header>
+        <p>
+            Calculate the actual wall thickness based on radiographic measurements.
+            The calculation follows the standard geometric relation used for in-service RT.
+        </p>
 
-<main>
+        <div class="form-group">
+            <label for="D1">D1 – Effective pipe diameter (mm)</label>
+            <input type="number" id="D1" step="any" placeholder="e.g. 168.3">
+        </div>
 
-  <h2>RT On-Stream Thickness</h2>
+        <div class="form-group">
+            <label for="D2">D2 – Measured diameter on film (mm)</label>
+            <input type="number" id="D2" step="any" placeholder="e.g. 175.0">
+        </div>
 
-  <p>
-    Calculate the actual wall thickness based on radiographic measurements.
-    The calculation follows the standard geometric relation used for in-service RT.
-  </p>
+        <div class="form-group">
+            <label for="d2">d2 – Measured thickness on film (mm)</label>
+            <input type="number" id="d2" step="any" placeholder="e.g. 4.2">
+        </div>
 
-  <div class="field">
-    <label>D1 – Effective pipe diameter (mm)</label>
-    <input id="D1" type="number" step="any" placeholder="e.g. 168.3">
-  </div>
+        <button class="btn" onclick="calculate()">Calculate thickness</button>
 
-  <div class="field">
-    <label>D2 – Measured diameter on film (mm)</label>
-    <input id="D2" type="number" step="any" placeholder="e.g. 175.0">
-  </div>
+        <div id="result" class="result-box">Result: d1 = —</div>
 
-  <div class="field">
-    <label>d2 – Measured thickness on film (mm)</label>
-    <input id="d2" type="number" step="any" placeholder="e.g. 4.2">
-  </div>
+        <p class="formula">
+            Formula: <strong>d1 = (D1 / D2) × d2</strong>
+        </p>
 
-  <button onclick="calculate()">Calculate thickness</button>
+        <div class="logo-section">
+            <img src="assets/d2.png" alt="RT geometry illustration">
+        </div>
+    </div>
 
-  <div id="result">Result: —</div>
+    <script>
+        function calculate() {
+            const D1 = parseFloat(document.getElementById('D1').value);
+            const D2 = parseFloat(document.getElementById('D2').value);
+            const d2 = parseFloat(document.getElementById('d2').value);
+            const out = document.getElementById('result');
 
-  <div class="formula">
-    Formula: <strong>d1 = (D1 / D2) × d2</strong>
-  </div>
-
-  <div class="illustration">
-    <img src="assets/d2.png" alt="RT geometry illustration">
-  </div>
-
-</main>
-
-<script>
-  function calculate() {
-    const D1 = parseFloat(document.getElementById('D1').value);
-    const D2 = parseFloat(document.getElementById('D2').value);
-    const d2 = parseFloat(document.getElementById('d2').value);
-    const out = document.getElementById('result');
-
-    if (!isNaN(D1) && !isNaN(D2) && !isNaN(d2) && D2 !== 0) {
-      const d1 = (D1 / D2) * d2;
-      out.textContent = 'Result: ' + d1.toFixed(2) + ' mm';
-    } else {
-      out.textContent = 'Result: invalid input';
-    }
-  }
-</script>
-
+            if (!isNaN(D1) && !isNaN(D2) && !isNaN(d2) && D2 !== 0) {
+                const d1 = (D1 / D2) * d2;
+                out.textContent = 'Result: d1 = ' + d1.toFixed(2) + ' mm';
+            } else {
+                out.textContent = 'Result: d1 = invalid input';
+            }
+        }
+    </script>
 </body>
 </html>
